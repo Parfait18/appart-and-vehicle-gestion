@@ -18,16 +18,8 @@ class VehicleHistoricController extends BaseController
     public function getVehicleActivities(Request $request)
     {
 
-        $total_vehicle = Vehicle::all()->count();
-
-        $disabled_vehicle = Vehicle::where('status', 0)->get()->count();
-
-        $active_vehicle = Vehicle::where('status', 1)->get()->count();
-
-        return view('vehicle.vehicle_historic_dash', ["total" => $total_vehicle, "disabled_vehicle" => $disabled_vehicle, "active_vehicle" => $active_vehicle]);
+        return view('vehicle.vehicle_historic_dash');
     }
-
-
 
     public function store(Request $request)
     {
@@ -156,7 +148,7 @@ class VehicleHistoricController extends BaseController
                         'start_km' => $request->start_km,            'arrival_time'  =>  $request->arrival_time,
                         'arrival_km' => $request->arrival_km,
                         'amount_repaid' => $request->amount_repaid,
-                        'status' => 'DEJA PASSE'
+                        'status' => 'TERMINE'
 
                     ]);
             } else if ($start_time->lt($today) && $today->lt($arrival_time)) {
@@ -212,7 +204,7 @@ class VehicleHistoricController extends BaseController
                     'ca_daily' =>  $request->amount_repaid,
                     'start_km' => $request->start_km,
                     'travel_time' =>  $request->travel_time,
-                    'status' => 'DEJA PASSE'
+                    'status' => 'TERMINE'
 
                 ]);
         }

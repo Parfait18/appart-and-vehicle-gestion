@@ -13,15 +13,22 @@ class VehicleController extends BaseController
     public function index()
     {
 
+        return view('vehicle.vehicle_dash');
+    }
+
+    public function getVehicleRecapData()
+    {
         $total_vehicle = Vehicle::all()->count();
-
-
 
         $disabled_vehicle = Vehicle::where('status', 0)->get()->count();
 
-        $active_vehicle = Vehicle::where('status', 1)->get()->count();
+        $active_vehicle = Vehicle::where('status', 1)
+            ->where('current_state', "OCCUPE")
+            ->get()->count();
 
-        return view('vehicle.vehicle_dash', ["total" => $total_vehicle, "disabled_vehicle" => $disabled_vehicle, "active_vehicle" => $active_vehicle]);
+        $available_vehicle = Vehicle::where('status', 1)->where('current_state', "LIBRE")->get()->count();
+
+        return  ["total" => $total_vehicle, "disabled_vehicle" => $disabled_vehicle, "active_vehicle" => $active_vehicle, "available_vehicle" => $available_vehicle];
     }
 
 

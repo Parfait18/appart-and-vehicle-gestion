@@ -15,26 +15,10 @@ class VehiclesRecapController extends BaseController
 
     public function indexRecap()
     {
-        $total_vehicle = Vehicle::all()->count();
-
-        $disabled_vehicle = Vehicle::where('status', 0)->get()->count();
-
-        $active_vehicle = Vehicle::where('status', 1)->get()->count();
-
-        return view('vehicle.vehicle_recap', ["total" => $total_vehicle, "disabled_vehicle" => $disabled_vehicle, "active_vehicle" => $active_vehicle]);
+        return view('vehicle.vehicle_recap');
     }
-    public function getVehicleRecapData()
-    {
-        $total_vehicle = Vehicle::all()->count();
 
-        $disabled_vehicle = Vehicle::where('status', 0)->get()->count();
 
-        $active_vehicle = Vehicle::where('status', 1)->where('current_state', "OCCUPE")->get()->count();
-
-        $available_vehicle = Vehicle::where('status', 1)->where('current_state', "LIBRE")->get()->count();
-
-        return  ["total" => $total_vehicle, "disabled_vehicle" => $disabled_vehicle, "active_vehicle" => $active_vehicle, "available_vehicle" => $available_vehicle];
-    }
 
     public function recapVehicles(Request $request)
     {
@@ -57,6 +41,34 @@ class VehiclesRecapController extends BaseController
             )
             ->groupBy('matricule')
             ->get();
+
+
+        //list to get vehicle who don't have hsitorique
+        $not_hist =  Vehicle::select('current_state', 'matricule')->whereNotIn(
+            'id',
+            VehicleHistoric::whereBetween(
+                'vehicle_historics.created_at',
+                [
+                    $last_two_month . ' 00:00:00',
+                    $this_month . ' 23:59:59'
+                ]
+            )
+                ->groupBy('vehicle_id')
+                ->pluck('vehicle_id')
+        )
+            ->get();
+
+
+        $length = count($vehicle);
+        foreach ($not_hist as $key => $value) {
+
+            $vehicle[$length] = $value;
+            $vehicle[$length]['ca_total'] = 0;
+            $vehicle[$length]['km_total'] = 0;
+
+            $length += 1;
+        }
+
 
         $reponse = json_encode(array('data' => $vehicle), TRUE);
 

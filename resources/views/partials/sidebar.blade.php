@@ -4,7 +4,12 @@
             <a href="/dashboard" style="color: #6777ef">Gestion </a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="/dashboard">St</a>
+            <a href="/dashboard">
+
+                <center> <img class="mx-auto" id="logo" width="50" src="{{ asset('assets/img/logo_resto.png') }}" alt="logo">
+                </center>
+
+            </a>
         </div>
         <ul class="sidebar-menu">
             {{-- <li class="menu-header">Dashboard</li> --}}

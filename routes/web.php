@@ -6,6 +6,7 @@ use App\Http\Controllers\Appartement\AppartHistoricController;
 use App\Http\Controllers\Appartement\AppartRecapController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IndicePriceController;
 use App\Http\Controllers\Vehicles\VehicleController;
 use App\Http\Controllers\Vehicles\VehicleHistoricController;
 use App\Http\Controllers\Vehicles\VehiclesRecapController;
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/add-appart', [AppartController::class, 'store'])->name('addAppart');
     Route::get('/list-appart', [AppartController::class, 'getApparts'])->name('getApparts');
     Route::post('/get-appart', [AppartController::class, 'getAppartById'])->name('getAppartById');
+    Route::post('/appart-by-type', [AppartController::class, 'getAppartByType'])->name('getAppartByType');
     Route::post('/update-appart', [AppartController::class, 'updateAppart'])->name('updateAppart');
     Route::get('/active-appart', [AppartController::class, 'getValidAppart'])->name('getValidAppart');
 
@@ -82,16 +84,22 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/list-agent', [AgentController::class, 'getAgents'])->name('getAgents');
     Route::post('/update-agent', [AgentController::class, 'updateAgent'])->name('updateAgent');
     Route::post('/get-agent', [AgentController::class, 'getAgentById'])->name('getAgentById');
+    Route::get('/get-recap-agent', [AgentController::class, 'getRecapAgent'])->name('getRecapAgent');
 
+
+    //vehicle recap routes
     Route::get('/vehicle-recap', [VehiclesRecapController::class, 'indexRecap'])->name('recapIndex');
     Route::post('/get-vehicle-recap', [VehiclesRecapController::class, 'recapVehicles'])->name('recapVehicles');
-    Route::post('/get-vehicle-data', [VehiclesRecapController::class, 'getVehicleRecapData'])->name('getVehicleRecapData');
+    Route::get('/get-vehicle-data', [VehicleController::class, 'getVehicleRecapData'])->name('getVehicleRecapData');
 
-
-
+    //appart recap routes
     Route::get('/appart-recap', [AppartRecapController::class, 'indexRecap'])->name('recapIndexAppart');
     Route::post('/get-appart-recap', [AppartRecapController::class, 'recapAppartements'])->name('recapApparts');
-    Route::post('/get-appart-data', [AppartRecapController::class, 'getAppartRecapData'])->name('getAppartRecapData');
+    Route::get('/get-appart-data', [AppartController::class, 'getAppartRecapData'])->name('getAppartRecapData');
+
+
+
+    Route::post('/get-indice', [IndicePriceController::class, 'getIndiceByTypeDays'])->name('getIndiceByTypeDays');
 
 
 

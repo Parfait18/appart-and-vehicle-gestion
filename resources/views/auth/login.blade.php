@@ -403,7 +403,7 @@
 
 
         body {
-            background: linear-gradient(90deg, #C7C5F4, #776BCC);
+            background: #0a284b;
             display: grid;
             place-items: center;
             height: 100vh;
@@ -420,11 +420,11 @@
 
 
         .screen {
-            background: linear-gradient(90deg, #5D54A4, #7C78B8);
+            background: linear-gradient(90deg, #ff000048, #0a2e63);
             position: relative;
             height: 600px;
             width: 360px;
-            box-shadow: 0px 0px 24px #5C5696;
+            box-shadow: 0px 0px 24px #140d57;
         }
 
         .screen__content {
@@ -454,7 +454,8 @@
         .screen__background__shape1 {
             height: 520px;
             width: 520px;
-            background: #FFF;
+            /* background: #FFF; */
+            background: rgba(255, 255, 255, 0.8);
             top: -50px;
             right: 120px;
             border-radius: 0 72px 0 0;
@@ -463,7 +464,7 @@
         .screen__background__shape2 {
             height: 220px;
             width: 220px;
-            background: #6C63AC;
+            background: #ff000031;
             top: -172px;
             right: 0;
             border-radius: 32px;
@@ -472,7 +473,7 @@
         .screen__background__shape3 {
             height: 540px;
             width: 190px;
-            background: linear-gradient(270deg, #5D54A4, #6A679E);
+            background: linear-gradient(270deg, #1c246d, hsla(0, 100%, 50%, 0.185));
             top: -24px;
             right: 0;
             border-radius: 32px;
@@ -481,16 +482,16 @@
         .screen__background__shape4 {
             height: 400px;
             width: 200px;
-            background: #7E7BB9;
+            background: #0d1750b6;
             top: 420px;
             right: 50px;
             border-radius: 60px;
         }
 
         .login {
-            width: 320px;
+
             padding: 30px;
-            padding-top: 117px;
+            padding-top: 20px;
         }
 
         .login__field {
@@ -507,10 +508,10 @@
         .login__input {
             border-radius: 2px;
             border: none;
-            color: #7e5db5;
+            color: #10254d;
             font-size: 16px;
             padding: 14px;
-            border-bottom: 1.5px solid #D1D1D4;
+            border-bottom: 2px solid #D1D1D4;
             background: none;
 
             padding-left: 24px;
@@ -523,7 +524,7 @@
         .login__input:focus,
         .login__input:hover {
             outline: none;
-            border-bottom-color: #6A679E;
+            border-bottom-color: #1a165e;
         }
 
         .login__submit {
@@ -539,8 +540,8 @@
             align-items: center;
             /*  */
             width: 100%;
-            color: #4C489D;
-            box-shadow: 0px 2px 2px #5C5696;
+            color: #1a165e;
+            box-shadow: 0px 2px 2px #171058;
             cursor: pointer;
             transition: .5s;
         }
@@ -548,7 +549,7 @@
         .login__submit:active,
         .login__submit:focus,
         .login__submit:hover {
-            border-color: #6A679E;
+            border-color: #1a1668;
             outline: none;
         }
 
@@ -593,6 +594,12 @@
         #password {
             margin-bottom: 20px;
         }
+
+        #logo {
+            /* max-width: 4rem; */
+            margin: auto;
+
+        }
     </style>
 </head>
 
@@ -600,7 +607,10 @@
     <div class="container">
         <div class="screen">
             <div class="screen__content">
-
+                <div>
+                    <center> <img class="mx-auto" id="logo" width="150" src="{{ asset('assets/img/logo_resto.png') }}" alt="logo">
+                    </center>
+                </div>
                 <form method="POST" id="form-login" action="{{ route('login_check') }}" class="login" id="form-login">
                     @csrf
                     <div class="form-group col-md-12" style="font-weight:bold">
@@ -628,14 +638,7 @@
                         <i class="button__icon fas fa-chevron-right"></i>
                     </button>
                 </form>
-                {{-- <div class="social-login">
-                    <h3>log in via</h3>
-                    <div class="social-icons">
-                        <a href="#" class="social-login__icon fab fa-instagram"></a>
-                        <a href="#" class="social-login__icon fab fa-facebook"></a>
-                        <a href="#" class="social-login__icon fab fa-twitter"></a>
-                    </div>
-                </div> --}}
+
             </div>
             <div class="screen__background">
                 <span class="screen__background__shape screen__background__shape4"></span>

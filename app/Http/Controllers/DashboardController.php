@@ -30,7 +30,9 @@ class DashboardController extends Controller
 
         $disabled_vehicle = Vehicle::where('status', 0)->get()->count();
 
-        $active_vehicle = Vehicle::where('status', 1)->where('current_state', 'OCCUPE')->get()->count();
+        $active_vehicle = Vehicle::where('status', 1)
+            ->where('current_state', 'OCCUPE')
+            ->get()->count();
 
         $available_vehicle = Vehicle::where('status', 1)->where('current_state', 'LIBRE')->get()->count();
 

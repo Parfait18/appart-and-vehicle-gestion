@@ -14,28 +14,47 @@ class AppartController extends BaseController
     public function index()
     {
 
-        $total_appartement = Appartement::all()->count();
+        return view('appartement.appart_dash');
+    }
 
+    public function getAppartRecapData()
+    {
+        $total_appartement = Appartement::all()->count();
 
         $disabled_appartement = Appartement::where('status', 0)->get()->count();
 
-        $active_appartement = Appartement::where('status', 1)->get()->count();
+        $active_appartement = Appartement::where('status', 1)
+            ->where('current_state', "OCCUPE")
+            ->get()->count();
 
-        return view('appartement.appart_dash', ["total" => $total_appartement, "disabled_appartement" => $disabled_appartement, "active_appartement" => $active_appartement]);
+        $available_appartement = Appartement::where('status', 1)->where('current_state', "LIBRE")->get()->count();
+        $reserve_appartement = Appartement::where('status', 1)->where('current_state', "RESERVE")->get()->count();
+
+        $data =  ["total" => $total_appartement, "disabled_appartement" => $disabled_appartement, "active_appartement" => $active_appartement, "available_appartement" => $available_appartement, 'reserve_appartement' => $reserve_appartement];
+
+        return $data;
     }
-
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|min:2|max:255',
-            'code' => 'required|min:2|max:255',
-            'price' => 'required|integer',
             'type' => 'required',
 
         ]);
 
-        $appartement = Appartement::where('code', $request->code)->first();
+        $last_id = Appartement::all()->count();
+
+        $code = '';
+        if ($request->type == 'RV1') {
+            $code = '001/GH/APT00' . $last_id;
+        } else if ($request->type == 'RV2') {
+            $code = '002/GH/APT00' . $last_id;
+        } else if ($request->type == 'RV2') {
+            $code = '003/LL/APT00' . $last_id;
+        }
+
+        $appartement = Appartement::where('code', $code)->first();
 
         if ($appartement) {
 
@@ -44,8 +63,7 @@ class AppartController extends BaseController
 
         $new_appartement =  Appartement::create([
             'name' => $request->name,
-            'code' => $request->code,
-            'price' => $request->price,
+            'code' => $code,
             'type' => $request->type,
         ]);
 
@@ -72,12 +90,24 @@ class AppartController extends BaseController
         return $reponse;
     }
 
+
+
+    public function getAppartByType(Request $request)
+    {
+
+        $appartement = Appartement::where('type', $request->type)->where('status', 1)->where('current_state', 'LIBRE')->get();
+
+        $reponse = json_encode(array('data' => $appartement), TRUE);
+
+        return $reponse;
+    }
+
+
     public function updateAppart(Request $request)
     {
         $request->validate([
             'name' => 'required|min:2|max:255',
             'code' => 'required|min:2|max:255',
-            'price' => 'required',
             'type' => 'required',
             'status' => 'required',
 
@@ -90,11 +120,9 @@ class AppartController extends BaseController
             return  $this->sendError("Aucun appartement avec cet code");
         }
 
-
         Appartement::where('code', $request->code)
             ->update([
                 'name' => $request->name,
-                'price' =>  $request->price,
                 'type' => $request->type,
                 'status' => $request->status,
             ]);

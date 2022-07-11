@@ -19,14 +19,7 @@ class AgentController extends BaseController
     public function index(Request $request)
     {
 
-
-        $total_agent = User::all()->count();
-
-        $disabled_agent = User::where('status', 0)->get()->count();
-
-        $active_agent = User::where('status', 1)->get()->count();
-
-        return view('agent.agent_dash', ["total" => $total_agent, "disabled_agent" => $disabled_agent, "active_agent" => $active_agent]);
+        return view('agent.agent_dash');
     }
 
 
@@ -65,8 +58,8 @@ class AgentController extends BaseController
 
         $data_email = [
             'name' => $new_agent->name,
-            'email'=>$new_agent->email,
-            'password'=>$pass,
+            'email' => $new_agent->email,
+            'password' => $pass,
             'role' => 'Gestion des ' . $new_agent->role . 's',
             'url' => $generatedURL,
         ];
@@ -89,7 +82,7 @@ class AgentController extends BaseController
             abort(404);
         }
 
-        User::where('id',$user)->update([
+        User::where('id', $user)->update([
             'email_verified_at' => Carbon::today(),
         ]);
         return redirect(env('BACK_OFFICE_URL') . '/login');
@@ -148,5 +141,19 @@ class AgentController extends BaseController
         $reponse = json_encode(array('data' => $agent), TRUE);
 
         return $reponse;
+    }
+
+    public function getRecapAgent()
+    {
+
+        $total_agent = User::all()->count();
+
+        $disabled_agent = User::where('status', 0)->get()->count();
+
+        $active_agent = User::where('status', 1)->get()->count();
+
+        $data =  ["total" => $total_agent, "disabled_agent" => $disabled_agent, "active_agent" => $active_agent];
+
+        return $data;;
     }
 }

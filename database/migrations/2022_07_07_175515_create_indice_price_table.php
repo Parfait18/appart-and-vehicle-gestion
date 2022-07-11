@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('appartements', function (Blueprint $table) {
+        Schema::create('indice_prices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->string('type');
-            // $table->integer('price');
-            $table->string('current_state')->default('LIBRE');
-            $table->boolean('status')->default(1);
+            $table->string('stay_delay');
+            $table->integer('amount');
+            $table->string('appart_type');
+            $table->integer('min_nbr_day');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appartement');
+        Schema::dropIfExists('indice_price');
     }
 };

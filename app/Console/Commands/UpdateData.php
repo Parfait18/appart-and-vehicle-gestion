@@ -47,7 +47,7 @@ class UpdateData extends Command
 
                 AppartementHistoric::where('id', $item->id)->update([
 
-                    'status' => 'DEJA PASSE'
+                    'status' => 'TERMINE'
                 ]);
             } else if ($item->start_time->lt($today) && $today->lt($item->end_time)) {
                 Appartement::where('id', $$item->appart_id)

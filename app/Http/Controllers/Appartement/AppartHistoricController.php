@@ -16,13 +16,7 @@ class AppartHistoricController extends BaseController
     public function getAppartActivities(Request $request)
     {
 
-        $total_appartement = Appartement::all()->count();
-
-        $disabled_appartement = Appartement::where('status', 0)->get()->count();
-
-        $active_appartement = Appartement::where('status', 1)->get()->count();
-
-        return view('appartement.appart_historic_dash', ["total" => $total_appartement, "disabled_appartement" => $disabled_appartement, "active_appartement" => $active_appartement]);
+        return view('appartement.appart_historic_dash');
     }
 
 
@@ -66,7 +60,7 @@ class AppartHistoricController extends BaseController
                 'user_id' => $user_id,
                 'ca_daily' => $request->paid_amount,
                 'caution' => 55555,
-                'status' => 'DEJA PASSE'
+                'status' => 'TERMINE'
             ]);
         } else if ($start_time->lt($today) && $today->lt($end_time)) {
             //date of today is less than start date
@@ -90,6 +84,9 @@ class AppartHistoricController extends BaseController
                 'status' => 'EN COURS'
             ]);
         } else if ($start_time->gt($today) && $today->lt($end_time)) {
+
+            // return $start_time->gt($today);
+
             Appartement::where('id', $request->appart_id)
                 ->update([
                     'current_state' => 'RESERVE'
@@ -121,7 +118,6 @@ class AppartHistoricController extends BaseController
         $appartement = AppartementHistoric::join('appartements', 'appartement_historics.appart_id', '=', 'appartements.id')
             ->select(
                 'appartements.code',
-                'appartements.price',
                 'appartements.type',
                 // 'appartements.status',
                 'appartements.current_state',
@@ -143,7 +139,7 @@ class AppartHistoricController extends BaseController
         $historic = AppartementHistoric::join('appartements', 'appartement_historics.appart_id', '=', 'appartements.id')
             ->select(
                 'appartements.code',
-                'appartements.price',
+
                 'appartements.type',
                 'appartements.status',
                 'appartements.current_state',
@@ -197,7 +193,7 @@ class AppartHistoricController extends BaseController
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->appart_id,
                     'caution' => 55555,
-                    'status' => 'DEJA PASSE'
+                    'status' => 'TERMINE'
                 ]);
             } else if ($start_time->lt($today) && $today->lt($end_time)) {
                 //date of today is less than start date
@@ -265,7 +261,7 @@ class AppartHistoricController extends BaseController
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->last_id,
                     'caution' => 55555,
-                    'status' => 'DEJA PASSE'
+                    'status' => 'TERMINE'
                 ]);
             } else if ($start_time->lt($today) && $today->lt($end_time)) {
                 //date of today is less than start date

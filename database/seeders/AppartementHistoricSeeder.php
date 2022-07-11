@@ -16,7 +16,7 @@ class AppartementHistoricSeeder extends Seeder
      */
     public function run()
     {
-        //STATUS CAN TAKE EN COURS, DEJA PASSE, REVERVE
+        //STATUS CAN TAKE EN COURS, TERMINE, REVERVE
         $historic_one = AppartementHistoric::create([
             'start_time' => Carbon::today(),
             'end_time' =>  Carbon::today()->addDays(2),

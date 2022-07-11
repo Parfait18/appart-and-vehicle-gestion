@@ -1,42 +1,50 @@
 @extends('layouts.main_layout')
 
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="row" style="width: 100%">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Total des voitures</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $total }}</h1>
-                        {{-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a> --}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="custum-border card">
-                    <div class="card-body">
-                        <h5 class="card-title">Voitures en activité</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $active_vehicle }}</h1>
+                        <h5 class="card-title">Total</h5>
+                        <h1 id="total" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Voitures en hors services</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $disabled_vehicle }}</h1>
+                        <h5 class="card-title">Occupés</h5>
+                        <h1 id="active_vehicle" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-4">
-                <div class="card">
+            <div class="col-md-3">
+                <div class=" custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Voitures en hors services</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> 22</h1>
+                        <h5 class="card-title">Disponibles</h5>
+                        <h1 id="available_vehicle" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Suspendu</h5>
+                        <h1 id="disabled_vehicle" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="col-md-3">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Suspendus</h5>
+                        <h1 id="disabled_vehicle" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
                     </div>
                 </div>
             </div> --}}
@@ -47,10 +55,12 @@
 
         <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none">
 
-            <div id="screeresult" role="alert">
-            </div>
+
 
             <h2 class="text-center mb-4">Enregistrer une nouvelle voitures</h2>
+
+            <div id="screeresult" role="alert">
+            </div>
 
             <form id="vehicle-form" action="javascript:AddVehicle()">
                 @csrf
@@ -138,7 +148,7 @@
                                 </div>
 
                                 <div class="mb-3 form-group">
-                                    <div class="control-label">La Voiture est en service</div>
+                                    <div class="form-label">La Voiture est en service</div>
                                     <label class="custom-switch mt-2">
                                         <input id="status_check" type="checkbox" name="status" class="custom-switch-input">
                                         <span class="custom-switch-indicator"></span>
@@ -224,9 +234,38 @@
             $('#matricule').keyup(function() {
                 this.value = this.value.toLocaleUpperCase();
             });
-
+            chargeRecapDate()
         });
 
+        function chargeRecapDate() {
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('getVehicleRecapData') }}',
+                method: 'GET',
+                success: function(response) {
+                    try {
+
+                        console.log(response)
+                        $('#total').html(response.total);
+                        $('#disabled_vehicle').html(response.disabled_vehicle);
+                        $('#active_vehicle').html(response.active_vehicle);
+                        $('#available_vehicle').html(response.available_vehicle);
+
+
+                    } catch (error) {
+                        console.log(error)
+
+                    }
+
+                },
+                error: function(data) {
+                    console.log(data)
+                },
+            });
+        }
 
         function AddVehicle() {
             var frm = $('#vehicle-form');
@@ -257,7 +296,8 @@
                             $("#screeresult").addClass("alert alert-success");
                             setTimeout(function() {
                                 $("#screeresult").hide();
-                                location.reload();
+                                loadVehicles();
+                                chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
                             $('#modal-submit').html('Enregistrer').prop("disabled", false);
@@ -449,16 +489,14 @@
                             $("#modal-screeresult").removeClass("alert alert-danger");
                             $("#modal-screeresult").addClass("alert alert-success");
 
-
-
                             setTimeout(function() {
                                 $("#modal-screeresult").hide();
                                 this.loadVehicles()
-                                location.reload();
+                                loadVehicles();
+                                chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
                             $('#modal-submit').html('Enregistrer').prop("disabled", false);
-
 
 
                         } else {

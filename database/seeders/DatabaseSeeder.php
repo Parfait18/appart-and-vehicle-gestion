@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             AppartementSeeder::class,
             VehiculeHistoricSeeder::class,
             AppartementHistoricSeeder::class,
-
+            IndicePriceSeeder::class,
 
         ]);
     }

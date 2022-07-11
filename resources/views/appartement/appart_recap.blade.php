@@ -1,45 +1,54 @@
 @extends('layouts.main_layout')
 
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="row" style="width: 100%">
-            <div class="col-md-4">
+            <div class="col">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Total des appartement</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $total }}</h1>
-                        {{-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a> --}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="custum-border card">
-                    <div class="card-body">
-                        <h5 class="card-title">Appartements en activité</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $active_appartement }}</h1>
+                        <h5 class="card-title">Total</h5>
+                        <h1 id="total" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+
+            <div class="col">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Appartements en hors services</h5>
-                        <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> {{ $disabled_appartement }}</h1>
+                        <h5 class="card-title">Occupés</h5>
+                        <h1 id="active_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Voitures en hors services</h5>
-                    <h1 class=" text-center m-4 card-subtitle mb-2 text-muted"> 22</h1>
+            <div class="col">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Disponibles</h5>
+                        <h1 id="available_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
                 </div>
             </div>
-        </div> --}}
+            <div class="col">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Suspendus</h5>
+                        <h1 id="disabled_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Réservés</h5>
+                        <h1 id="reserve_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="mx-auto ">
@@ -67,7 +76,7 @@
                     <div class="form-group  pl-4">
 
                         <button type="submit" id="submit" class="btn btn-primary">Rechercher</button>
-                        <a id="close_btn" class="m-2 text-white btn btn-danger">Annuler la recherche</a>
+                        <a id="close_btn" class="m-2 text-white btn btn-info">Rechargées les données</a>
                     </div>
                 </div>
         </form>
@@ -137,8 +146,38 @@
         $(document).ready(function() {
             moment.locale('en')
             loadRecap()
-
+            chargeRecapDate()
         });
+
+        function chargeRecapDate() {
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('getAppartRecapData') }}',
+                method: 'GET',
+                success: function(response) {
+                    try {
+
+                        $('#total').html(response.total);
+                        $('#disabled_appartement').html(response.disabled_appartement);
+                        $('#active_appartement').html(response.active_appartement);
+                        $('#available_appartement').html(response.available_appartement);
+                        $('#reserve_appartement').html(response.reserve_appartement);
+
+
+                    } catch (error) {
+                        console.log(error)
+
+                    }
+
+                },
+                error: function(data) {
+                    console.log(data)
+                },
+            });
+        }
 
         function formatDate(str) {
             return moment(str).subtract(0, "hour").format("DD-MM-YYYY, h:mm:ss");
@@ -277,7 +316,8 @@
 
         $('#close_btn').click(function() {
             $('#title_datatable').html("Listes des recapitulatifs pour chaque appartements de ce mois")
-            loadRecap()
+            loadRecap();
+            chargeRecapDate();
         })
 
 

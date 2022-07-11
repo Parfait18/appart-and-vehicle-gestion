@@ -62,22 +62,27 @@
             background-repeat: no-repeat;
             background-size: 20px 20px; */
             background-color: #edecef;
-            transition: all 1s;
+            transition: all 0.5s;
             text-align: center;
             /* offset-x | offset-y | blur-radius | spread-radius | color */
             box-shadow: rgba(0, 0, 0, 0.56) 0px 2px 5px 2px;
             background-color: #edecef;
         }
 
-        /* .custum-border:hover {
+        .custum-border:hover {
             text-align: center;
             /* offset-x | offset-y | blur-radius | spread-radius | color */
-        box-shadow: rgba(0, 0, 0, 0.56) 0px 2px 5px 2px;
+            box-shadow: rgba(0, 0, 0, 0.56) 0px 0px 1px 2px;
 
         }
 
-        */ .card-title {
+        .card-title {
             text-align: center;
+        }
+
+        * {
+            font-weight: 900 !important;
+            font-size: 1rem;
         }
     </style>
     <!-- /END GA -->

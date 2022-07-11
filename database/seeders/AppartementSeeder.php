@@ -19,17 +19,15 @@ class AppartementSeeder extends Seeder
 
         $appart_one = Appartement::create([
             'name' => 'Appart1',
-            'price' => 5000,
-            'code' => 'AP123',
-            'type' => 'SIMPLE',
+            'code' => '001/GH/APT001',
+            'type' => 'RV1',
             "current_state" => "OCCUPE"
         ]);
 
         $appart_two = Appartement::create([
             'name' => 'Appart2',
-            'price' => 5000,
-            'code' => 'AP143',
-            'type' => 'SIMPLE',
+            'code' => '002/GH/APT002',
+            'type' => 'RV2',
             "current_state" => "LIBRE"
 
         ]);

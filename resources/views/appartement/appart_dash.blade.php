@@ -3,40 +3,48 @@
 @section('content')
     <div class="">
         <div class="row" style="width: 100%">
-            <div class="col-md-3">
+            <div class="col">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Total des appartements</h5>
+                        <h5 class="card-title">Total</h5>
                         <h1 id="total" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
-                        {{-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a> --}}
+
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+
+            <div class="col">
                 <div class="custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Appartements en activité</h5>
+                        <h5 class="card-title">Occupés</h5>
                         <h1 id="active_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col">
                 <div class=" custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Appartements disponible</h5>
+                        <h5 class="card-title">Disponibles</h5>
                         <h1 id="available_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col">
                 <div class=" custum-border card">
                     <div class="card-body">
-                        <h5 class="card-title">Appartements non disponible</h5>
+                        <h5 class="card-title">Suspendus</h5>
                         <h1 id="disabled_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class=" custum-border card">
+                    <div class="card-body">
+                        <h5 class="card-title">Réservés</h5>
+                        <h1 id="reserve_appartement" class=" text-center m-4 card-subtitle mb-2 text-muted"> </h1>
 
                     </div>
                 </div>
@@ -48,11 +56,12 @@
 
         <div id="new_appart_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none">
 
-            <div id="screeresult" role="alert">
-            </div>
+
 
             <h2 class="text-center mb-4">Enregistrer un nouvel appartement</h2>
 
+            <div id="screeresult" role="alert">
+            </div>
             <form id="appart-form" action="javascript:addAppart()">
                 @csrf
                 <div class="mb-3">
@@ -60,22 +69,23 @@
                     <input type="text" class="form-control" id="name" name="name" placeholder="Nom de l'appartement" aria-describedby="Nom de l'appartement" required>
 
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="code" class="form-label" required>Code</label>
-                    <input type="text" class="form-control" name="code" id="code" placeholder="Code de l'appartement" required>
-                </div>
-                <div class="mb-3">
+                    <input type="text" class="form-control" name="code" id="code" placeholder="Code de l'appartement" readonly required>
+                </div> --}}
+                {{-- <div class="mb-3">
                     <label for="price" class="form-label" required>Prix de l'appartement</label>
                     <input type="number" class="form-control" id="price" name="price" placeholder="Prix de l'appartement" step="1" required>
-                </div>
+                </div> --}}
 
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="type_select" class="form-label">Type de l'appartement</label>
                         <select id="type_select" class="form-control select2" name="type" style="width: 100%!important" required>
-                            <option value="" disabled>Selectionner</option>
-                            <option value="SIMPLE">SIMPLE</option>
-                            <option value="SANS DOUCHE INTERNE">SANS DOUCHE INTERNE</option>
+                            <option value="">Selectionner le type de l'appartement</option>
+                            <option value="RV1">RV1</option>
+                            <option value="RV2">RV2</option>
+                            <option value="STUDIO">STUDIO</option>
                         </select>
                     </div>
 
@@ -138,24 +148,26 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom de l'appartement</label>
                                     <input type="text" class="form-control" id="modal-name" name="name" placeholder="Nom de l'appartement" aria-describedby="Nom de l'appartement" required>
+                                </div>
 
-                                </div>
                                 <div class="mb-3">
-                                    <label for="code" class="form-label" required>Code</label>
-                                    <input type="text" class="form-control" name="code" id="modal-code" placeholder="Code de l'appartement" required>
+                                    <label for="code" class="form-label">Code de l'appartement</label>
+                                    <input type="text" class="form-control" id="modal-code" name="code" placeholder="Code de l'appartement" aria-describedby="Nom de l'appartement" required>
                                 </div>
-                                <div class="mb-3">
+
+                                {{-- <div class="mb-3">
                                     <label for="modal-price" class="form-label" required>Prix de l'appartement</label>
                                     <input type="number" class="form-control" id="modal-price" name="price" placeholder="Prix de l'appartement" step="0.01" required>
 
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <div id="modal-type-select-div" class="form-group">
                                         <label for="type" class="form-label">Type de l'appartement</label>
                                         <select id="modal_type_select" class="form-control select2" name="type" style="width: 100%!important" required>
                                             <option value="">Choisir le type de l'appartement</option>
-                                            <option value="SIMPLE">SIMPLE</option>
-                                            <option value="SANS DOUCHE INTERNE">SANS DOUCHE INTERNE</option>
+                                            <option value="RV1">RV1</option>
+                                            <option value="RV2">RV2</option>
+                                            <option value="STUDIO">STUDIO</option>
                                         </select>
                                     </div>
                                     <div id="modal-type-div" class="form-group">
@@ -165,9 +177,9 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 form-group">
-                                    <div class="control-label">L'appartement est tjrs en service</div>
+                                    <div class="form-label">L'appartement est tjrs en service</div>
                                     <label class="custom-switch mt-2">
-                                        <input id="status_check" type="checkbox" name="status" class="custom-switch-input">
+                                        <input id="status_check" type="checkbox" name="" class="custom-switch-input">
                                         <span class="custom-switch-indicator"></span>
                                         <span class="custom-switch-description"> OUI</span>
                                     </label>
@@ -228,18 +240,18 @@
 
                 $("#name").show().prop('required', true);
 
-                $("#code").show().prop('required', true);
+                // $("#code").show().prop('required', true);
 
-                $("#price").show().prop('required', true);
+                // $("#price").show().prop('required', true);
 
             });
             $('#close_btn').click(function() {
 
                 $("#name").hide().prop('required', false);
 
-                $("#code").hide().prop('required', false);
+                // $("#code").hide().prop('required', false);
 
-                $("#price").hide().prop('required', false);
+                // $("#price").hide().prop('required', false);
 
                 $("#new_appart_div").hide();
                 $("#new_appart_btn").show();
@@ -250,12 +262,43 @@
             });
 
 
-            $('#code').keyup(function() {
-                this.value = this.value.toLocaleUpperCase();
-            });
+            // $('#code').keyup(function() {
+            //     this.value = this.value.toLocaleUpperCase();
+            // });
+
+            chargeRecapDate()
 
         });
 
+        function chargeRecapDate() {
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('getAppartRecapData') }}',
+                method: 'GET',
+                success: function(response) {
+                    try {
+
+                        $('#total').html(response.total);
+                        $('#disabled_appartement').html(response.disabled_appartement);
+                        $('#active_appartement').html(response.active_appartement);
+                        $('#available_appartement').html(response.available_appartement);
+                        $('#reserve_appartement').html(response.reserve_appartement);
+
+
+                    } catch (error) {
+                        console.log(error)
+
+                    }
+
+                },
+                error: function(data) {
+                    console.log(data)
+                },
+            });
+        }
 
         function addAppart() {
             var frm = $('#appart-form');
@@ -286,7 +329,8 @@
                             $("#screeresult").addClass("alert alert-success");
                             setTimeout(function() {
                                 $("#screeresult").hide();
-                                location.reload();
+                                loadApparts();
+                                chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
 
@@ -448,7 +492,8 @@
                             $("#modal-screeresult").addClass("alert alert-success");
                             setTimeout(function() {
                                 $("#modal-screeresult").hide();
-                                location.reload();
+                                loadApparts();
+                                chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
 
@@ -467,11 +512,6 @@
                             $('#modal-submit').html('Enregistrer').prop("disabled", false);
 
                         }
-
-
-
-
-
 
                     } catch (error) {
                         $("#screeresult").show();
@@ -521,7 +561,7 @@
 
                         $("#modal-name").prop('readonly', true);
                         $("#modal-code").prop('readonly', true);
-                        $("#modal-price").prop('readonly', true);
+                        // $("#modal-price").prop('readonly', true);
                         $("#modal-type").prop('readonly', true);
                         $("#modal-type").prop('required', false);
                         $('#status_check').prop("disabled", true);
@@ -531,7 +571,7 @@
 
                         $('#modal-name').val(data.name);
                         $('#modal-code').val(data.code);
-                        $('#modal-price').val(data.price);
+                        // $('#modal-price').val(data.price);
                         $('#modal-type').val(data.type);
                         $('#modal_type_select').val();
                         $('#modal-submit').hide();
@@ -584,7 +624,7 @@
 
                         $("#modal-name").prop('readonly', false);
                         $("#modal-code").prop('readonly', true);
-                        $("#modal-price").prop('readonly', false);
+                        // $("#modal-price").prop('readonly', false);
                         $('#status_check').prop("disabled", false);
                         $('#modal_type_select').prop("disabled", false);
 
@@ -597,7 +637,7 @@
 
                         $('#modal-name').val(data.name);
                         $('#modal-code').val(data.code);
-                        $('#modal-price').val(data.price);
+                        // $('#modal-price').val(data.price);
                         $('#modal-submit').show();
 
 
