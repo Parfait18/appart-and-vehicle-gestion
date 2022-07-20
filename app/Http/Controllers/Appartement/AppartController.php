@@ -47,11 +47,11 @@ class AppartController extends BaseController
 
         $code = '';
         if ($request->type == 'RV1') {
-            $code = '001/GH/APT00' . $last_id;
+            $code = '001/LH/APT00' . $last_id + 1;
         } else if ($request->type == 'RV2') {
-            $code = '002/GH/APT00' . $last_id;
-        } else if ($request->type == 'RV2') {
-            $code = '003/LL/APT00' . $last_id;
+            $code = '002/GH/APT00' . $last_id + 1;
+        } else if ($request->type == 'STUDIO') {
+            $code = '003/LL/APT00' . $last_id + 1;
         }
 
         $appartement = Appartement::where('code', $code)->first();
@@ -120,11 +120,29 @@ class AppartController extends BaseController
             return  $this->sendError("Aucun appartement avec cet code");
         }
 
+        $last_id = Appartement::all()->count();
+
+        $code = '';
+
+        if ($appartement->type != $request->type) {
+
+            if ($request->type == 'RV1') {
+                $code = '001/LH/APT00' . $last_id + 1;
+            } else if ($request->type == 'RV2') {
+                $code = '002/GH/APT00' . $last_id + 1;
+            } else if ($request->type == 'STUDIO') {
+                $code = '003/LL/APT00' . $last_id + 1;
+            }
+        } else {
+            $code = $request->code;
+        }
+
         Appartement::where('code', $request->code)
             ->update([
                 'name' => $request->name,
                 'type' => $request->type,
                 'status' => $request->status,
+                'code' => $code
             ]);
 
         return  $this->sendResponse("Enregistrement réussi");

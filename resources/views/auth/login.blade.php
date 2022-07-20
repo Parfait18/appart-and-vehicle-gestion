@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+    <link rel="icon" href="{{ asset('assets/img/logo_resto.png') }}">
     <!-- Styles -->
     <style>
         a {
@@ -404,6 +404,11 @@
 
         body {
             background: #0a284b;
+            background-image: url("assets/img/logo_resto.png"), url("assets/img/logo_resto.png");
+            background-repeat: no-repeat, no-repeat, repeat-x;
+            background-position: left, right;
+            /* background-size: cover; */
+            /* background: #0a284b; */
             display: grid;
             place-items: center;
             height: 100vh;

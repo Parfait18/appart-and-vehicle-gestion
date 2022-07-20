@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('color');
             $table->string('matricule')->unique();
+            $table->string('vehicle_file')->nullable();
+            $table->string('conductor_file')->nullable();
             $table->boolean('status')->default(1);
             $table->string('current_state')->default('LIBRE');
             $table->timestamps();

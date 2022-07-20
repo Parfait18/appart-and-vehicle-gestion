@@ -53,22 +53,22 @@
         <form id="search-form" action="javascript:search()">
             @csrf <div class="row">
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="">
                         <label for="date_debut" class="form-label">Date de début</label>
                         <input id="date_debut" type="date" name="date_debut" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="">
                         <label for="date_fin" class="form-label">Date de fin</label>
                         <input id="date_fin" type="date" name="date_fin" class="form-control" required>
                     </div>
                 </div>
                 <div class="col-sm pt-4">
-                    <div class="form-group  pl-4">
+                    <div class="pl-4">
 
                         <button type="submit" id="submit" class="btn btn-primary">Rechercher</button>
-                        <a id="close_btn" class="m-2 text-white btn btn-info">Recharger les données</a>
+                        <a id="close_btn" class="m-2 text-white btn btn-warning">Recharger les données</a>
                     </div>
                 </div>
         </form>
@@ -344,7 +344,9 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
+
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -379,10 +381,10 @@
                                 render: function(data, type, row, meta) {
 
                                     if (data == 'LIBRE') {
-                                        return "<div class='badge badge-success h1'>LIBRE </div>";
+                                        return "<div class='badge badge-success'><h8>LIBRE</h8> </div>";
 
                                     } else {
-                                        return "<div class='badge badge-danger h1'> OCCUPÉ</div>  ";
+                                        return "<div class='badge badge-danger'><h8> OCCUPÉ </h8></div>  ";
 
                                     }
                                 },

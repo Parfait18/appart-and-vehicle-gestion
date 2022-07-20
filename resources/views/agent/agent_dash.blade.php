@@ -4,13 +4,11 @@
     <div class="">
         <div class="row" style="width: 100%">
             <div class="col-md-4">
-                <div class="custum-border card">
+                <div id="first-card" class="custum-border card">
                     <div class="card-body">
                         <h5 class="card-title">Total des agents</h5>
                         <h1 id="total" class=" text-center m-4 card-subtitle mb-2 text-muted"></h1>
-                        {{-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a> --}}
+
                     </div>
                 </div>
             </div>
@@ -64,7 +62,7 @@
                     <input type="email" class="form-control" name="email" id="email" placeholder="Email de l'agent" required>
                 </div>
                 <div class="mb-3">
-                    <div class="form-group">
+                    <div class="">
                         <label for="role" class="form-label">Role de l'agent</label>
                         <select id="matricul_select" class="form-control select2" name="role" style="width: 100%!important" required>
                             <option value="">Choisir le role de l'agent</option>
@@ -127,7 +125,7 @@
                         <div class="modal-body">
                             <div id="modal-screeresult" role="alert">
                             </div>
-                            <form id="modal-agent-form" action="javascript:update_agent()">
+                            <form enctype="multipart/form-data" method="post" id="modal-agent-form" action="javascript:update_agent()">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom de l' agent</label>
@@ -142,7 +140,7 @@
                                 <div class="mb-3">
                                     <div id="modal-role-select-div" class="form-group">
                                         <label for="role" class="form-label">Role de l'agent</label>
-                                        <select id="modal-role-select" class="form-control select2" name="role" style="width: 100%!important" required>
+                                        <select id="modal-role-select" class="form-control select2" name="role" style="width: 100%!important">
                                             <option value="">Choisir le role de l'agent</option>
                                             <option value="vehicule">Gestion des vehicules</option>
                                             <option value="appartement">Gestion des appartement</option>
@@ -318,11 +316,6 @@
 
                         }
 
-
-
-
-
-
                     } catch (error) {
                         $("#screeresult").show();
 
@@ -365,7 +358,8 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -411,10 +405,10 @@
                                 render: function(data, type, row, meta) {
                                     // console.log(data)
                                     if (data == 1) {
-                                        return "<div class='badge badge-success h1'>En activité </div>";
+                                        return "<div class='badge badge-success'><h8>En activité</h8> </div>";
 
                                     } else {
-                                        return "<div class='badge badge-danger h1'> Suspendu</div>  ";
+                                        return "<div class='badge badge-danger'><h8> Suspendu </h8></div>  ";
 
                                     }
                                 },
@@ -430,7 +424,7 @@
         }
 
         function update_agent() {
-            var frm = $('#modal-agent-form');
+            // var frm = $('#modal-agent-form');
 
             if ($('#status_check').is(":checked")) {
                 $("#hidden_check").val(1)
@@ -438,13 +432,33 @@
                 $("#hidden_check").val(0)
             }
 
+
+            //Form data
+            var data = new FormData();
+            var form_data = $('#modal-agent-form').serializeArray();
+
+
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+
+            if (!$('#modal-role-select').val()) {
+                var role = $('#modal-role').val()
+                data.set("role", role);
+            }
+
+
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{ route('updateAgent') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
 
                     $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
@@ -624,7 +638,7 @@
 
                         $('#modal-name').val(data.name);
                         $('#modal-email').val(data.email);
-                        // $('#modal-').val(data.color);
+                        $('#modal-role').val(data.role);
                         $('#modal-submit').show();
 
 

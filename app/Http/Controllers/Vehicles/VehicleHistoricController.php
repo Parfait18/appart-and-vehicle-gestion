@@ -127,7 +127,7 @@ class VehicleHistoricController extends BaseController
 
         $start_time = Carbon::parse($request->start_time);
         $arrival_time = Carbon::parse($request->arrival_time);
-        $today = Carbon::now();
+        $today = Carbon::now()->addHour(1);
 
         if ($request->start_time != null && $request->arrival_time != null) {
 
@@ -151,7 +151,7 @@ class VehicleHistoricController extends BaseController
                         'status' => 'TERMINE'
 
                     ]);
-            } else if ($start_time->lt($today) && $today->lt($arrival_time)) {
+            } else if ($start_time->lte($today) && $today->lte($arrival_time)) {
                 Vehicle::where('matricule', $request->vehicle_id)
                     ->update([
                         'current_state' => 'OCCUPE'

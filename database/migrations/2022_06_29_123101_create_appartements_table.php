@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->string('type');
-            // $table->integer('price');
             $table->string('current_state')->default('LIBRE');
             $table->boolean('status')->default(1);
             $table->timestamps();

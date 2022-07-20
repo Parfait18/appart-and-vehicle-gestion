@@ -61,7 +61,7 @@
             <div id="screeresult" role="alert">
             </div>
 
-            <form id="historic-form" action="javascript:add_historic()">
+            <form id="historic-form" enctype="multipart/form-data" method="post" action="javascript:add_historic()">
                 @csrf
                 <input type="hidden" id="stay_length" class="form-control" name="stay_length" required>
 
@@ -98,10 +98,10 @@
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="end_time" class="form-label" required>Date de fin du séjour</label>
-                        <input id="end_time" type="datetime-local" name="end_time" class="form-control" onchange="endChange()" format="DD-MM-YY hh:mm:ss">
+                        <input id="end_time" type="datetime-local" name="end_time" class="form-control" onchange="endChange()">
                     </div>
                 </div>
-                @if (Auth::check() && Auth::user()->role == 'admin')
+                @if (Auth::check() & (Auth::user()->role == 'admin'))
                     <div id="other_check_div" class="mb-3 form-group">
                         <div class="form-label">Autre tarif ?</div>
                         <label class="custom-switch mt-2">
@@ -114,7 +114,7 @@
 
                 <div class="mb-3">
                     <label for="amount" class="form-label" required>Prix par jour</label>
-                    <input type="number" class="form-control" id="day_amount" placeholder="Prix par jour" step="1" required>
+                    <input type="number" class="form-control" id="day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
                 </div>
 
                 <div class="mb-3">
@@ -128,14 +128,33 @@
                     <input type="number" class="form-control" id="paid_amount" value="0" name="paid_amount" placeholder="Montant payé" step="1" required>
                 </div>
                 <div class="mb-3">
-                    <label for="rest" class="form-labetype_selectl" required>Montant restant</label>
+                    <label for="rest" class="form-label" required>Montant restant</label>
                     <input type="number" class="form-control" id="rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
                 </div>
-
-
                 <div class="mb-3">
                     <label for="occupant" class="form-label">Nom du client</label>
                     <input type="text" class="form-control" id="occupant" name="occupant" placeholder="Nom du client" aria-describedby="Nom du client" required>
+                </div>
+                <div class="mb-3">
+                    <label for="cni_number" class="form-label">Numéro CNI</label>
+                    <input type="number" class="form-control" id="cni_number" name="cni_number" placeholder="Numéro de la carte d'identité" step="1" required>
+                </div>
+
+                <div class="mb-3">
+                    <div id="expire_screeresult" role="alert">
+                    </div>
+                    <div class="form-group">
+                        <label for="expire_date" class="form-label">Date d'expiration de la carte</label>
+                        <input id="expire_date" type="date" name="expire_date" class="form-control" required onchange="expireChange()">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div id="file_screeresult" role="alert">
+                    </div>
+
+                    <label for="contrat_file" class="form-label">Fichier du contrat</label>
+                    <input class="form-control" name="contrat_file" type="file" id="contrat_file" accept="image/*,.pdf" required />
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -193,26 +212,24 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="modal-screeresult" role="alert">
+                            <div id="modal_screeresult" role="alert">
                             </div>
-                            <form id="modal-historic-form" action="javascript:update_historic()">
+                            <form enctype="multipart/form-data" method="post" id="modal-historic-form" action="javascript:update_historic()">
 
                                 @csrf
                                 <input type="hidden" id="modal_stay_length" class="form-control" name="stay_length" required>
                                 <input type="hidden" id="modal_appart_hist_id" class="form-control" name="id" required>
                                 <input type="hidden" id="modal_appart_id" class="form-control" name="last_id" required>
 
-
-
                                 <div class="mb-3 form-group">
                                     <div id="appart_check_div" class="mb-3 form-group">
                                         <div class="form-label">Changer d'appartement ?</div>
                                         <label class="custom-switch mt-2">
-                                            <input id="appart_check" type="checkbox" name="advance" class="custom-switch-input">
+                                            <input id="appart_check" type="checkbox" class="custom-switch-input">
                                             <span class="custom-switch-indicator"></span>
                                             <span class="custom-switch-description"> OUI</span>
                                         </label>
-                                        <input id="hidden_check" type="hidden" name="advance" value="0" />
+                                        <input id="hidden_check" type="hidden" value="0" />
                                     </div>
                                     <div id="last_appart">
                                         <label class="form-label"> Code de l'appartement choisi</label>
@@ -220,6 +237,15 @@
                                     </div>
 
                                     <div id="select_div">
+                                        <div class="form-group">
+                                            <label for="appart_type" class="form-label">Type de l'appartement</label>
+                                            <select id="modal_type_select" class="form-control select2" name="appart_type" style="width: 100%!important">
+                                                <option value="">Choisir le type de l'appartement</option>
+                                                <option value="RV1">RV1</option>
+                                                <option value="RV2">RV2</option>
+                                                <option value="STUDIO">STUDIO</option>
+                                            </select>
+                                        </div>
                                         <label for="modal_appart_id" class="form-label">Code de l'appartement</label>
                                         <select id="modal_code_select" class="form-control select2" name="appart_id" style="width: 100%!important" required>
                                             <option value="">Choisir le code de l'appartement</option>
@@ -229,13 +255,32 @@
                                 <div class="mb-3">
                                     <div class="form-group">
                                         <label for="modal_start_time" class="form-label" required>Heure de début séjour</label>
-                                        <input id="modal_start_time" type="datetime-local" name="start_time" class="form-control" format="DD-MM-YY hh:mm:ss">
+                                        <input id="modal_start_time" type="datetime-local" name="start_time" class="form-control" onchange="startModalChange();" required>
                                     </div>
-
                                 </div>
                                 <div class="mb-3">
-                                    <label for="modal_amount" class="form-label" required>Prix de l'appartement</label>
-                                    <input type="number" class="form-control" id="modal_amount" name="amount" placeholder="Prix de l'appartement" step="1" readonly required>
+                                    <div class="form-group">
+                                        <label for="modal_end_time" class="form-label" required>Heure de fin du séjour</label>
+                                        <input id="modal_end_time" type="datetime-local" name="end_time" class="form-control" onchange="endModalChange()" required>
+                                    </div>
+                                </div>
+                                @if (Auth::check() & (Auth::user()->role == 'admin'))
+                                    <div id="modal_other_check_div" class="mb-3 form-group">
+                                        <div class="form-label">Autre tarif ?</div>
+                                        <label class="custom-switch mt-2">
+                                            <input id="modal_other_check" type="checkbox" class="custom-switch-input">
+                                            <span class="custom-switch-indicator"></span>
+                                            <span class="custom-switch-description"> OUI</span>
+                                        </label>
+                                    </div>
+                                @endif
+                                <div class="mb-3">
+                                    <label for="modal_day_amount" class="form-label" required>Prix par jour</label>
+                                    <input type="number" class="form-control" id="modal_day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modal_amount" class="form-label" required>Prix total du séjour</label>
+                                    <input type="number" class="form-control" id="modal_amount" name="amount" placeholder="Prix total du séjour" step="1" readonly required>
                                 </div>
 
 
@@ -247,21 +292,35 @@
                                     <label for="modal_rest" class="form-label" required>Montant restant</label>
                                     <input type="number" class="form-control" id="modal_rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
                                 </div>
-                                <div class="mb-3">
-                                    <div class="form-group">
-                                        <label for="modal_end_time" class="form-label" required>Heure de fin du séjour</label>
-                                        <input id="modal_end_time" type="datetime-local" name="end_time" class="form-control" format="DD-MM-YY hh:mm:ss">
-                                    </div>
-                                </div>
+
 
                                 <div class="mb-3">
                                     <label for="modal_occupant" class="form-label">Nom du client</label>
                                     <input type="text" class="form-control" id="modal_occupant" name="occupant" placeholder="Nom du client" aria-describedby="Nom du client" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="modal_cni_number" class="form-label" required>Numéro CNI</label>
+                                    <input type="number" class="form-control" id="modal_cni_number" name="cni_number" placeholder="Numéro de la carte d'identité" step="1" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div id="modal_expire_screeresult" role="alert">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modal_expire_date" class="form-label" required>Date d'expiration de la carte</label>
+                                        <input id="modal_expire_date" type="datetime-local" name="expire_date" class="form-control" required onchange="expireModalChange()">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div id="modal_file_screeresult" role="alert">
+                                    </div>
 
-
-                                <button type="submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a id="close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
+                                    <label for="contrat_file" class="form-label">Fichier du contrat</label>
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="contratView"> Voir <i class="
+                                    fa fa-eye"></i></button>
+                                    <input class="form-control" name="contrat_file" type="file" id="modal_contrat_file" accept="image/*,.pdf" />
+                                </div>
+                                <button type="modal_submit" id="modal_submit" class="btn btn-primary">Enregistrer</button>
+                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
 
                             </form>
 
@@ -303,11 +362,12 @@
 
     <script>
         $(document).ready(function() {
-            moment.locale('en')
+            moment.locale('fr')
 
             $("#end_time").prop('disabled', true)
             $("#start_time").prop('disabled', true)
             $("#other_check_div").hide()
+            $("#modal_other_check_div").hide()
             $("#day_amount").attr('readonly', true);
 
 
@@ -342,6 +402,12 @@
                 $("#other_check_div").hide()
 
 
+                $("#contrat_file").val(null);
+
+            });
+
+            $('#modal_close_btn').click(function() {
+                $("#modal_contrat_file").val(null);
             });
 
 
@@ -354,6 +420,18 @@
                 } else {
 
                     $("#day_amount").attr('readonly', true);
+                }
+            });
+
+            $('#modal_other_check').on('change', function() {
+
+                if ($('#modal_other_check').is(':checked')) {
+
+                    $("#modal_day_amount").attr('readonly', false);
+
+                } else {
+
+                    $("#modal_day_amount").attr('readonly', true);
                 }
             });
 
@@ -383,6 +461,35 @@
                 $('#amount').val(day_amount * nbr_day)
                 $('#rest').val(day_amount)
                 $('#paid_amount').val(0)
+
+            });
+
+
+            $('#modal_day_amount').keyup(function() {
+
+                let day_amount = $('#modal_day_amount').val();
+                $('#modal_rest').val(day_amount);
+
+
+                let start_time
+                let end_time
+
+
+                if ($("#modal_end_time").val()) {
+                    end_time = formatDate($("#modal_end_time").val())
+                }
+
+                start_time = formatDate($("#modal_start_time").val())
+
+                var beginningTime = moment(start_time);
+                var endTime = moment(end_time);
+
+                let nbr_day = getDayDiff(start_time, end_time)
+
+
+                $('#modal_amount').val(day_amount * nbr_day)
+                $('#modal_rest').val(day_amount)
+                $('#modal_paid_amount').val(0)
 
             });
 
@@ -445,6 +552,67 @@
 
             });
 
+
+            $('#modal_type_select').on('change', function() {
+                var type = this.value
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '{{ route('getAppartByType') }}',
+                    method: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        type: type
+                    },
+                    success: function(response) {
+                        try {
+                            let data = JSON.parse(response).data
+                            //active start date if type is selected
+                            if (data.length > 0) {
+                                $("#modal_start_time").prop('readonly', false)
+                            } else {
+                                $("#modal_start_time").prop('readonly', true)
+                                $("#modal_screeresult").html("IL n'y a pas d'appartement disponible pour ce type");
+                                $("#modal_screeresult").show();
+
+                                $("#modal_screeresult").removeClass("alert alert-success");
+                                $("#modal_screeresult").removeClass("alert alert-danger");
+                                $("#modal_screeresult").addClass("alert alert-danger");
+                                setTimeout(function() {
+                                    $("#modal_screeresult").hide();
+
+                                }, 2000); //wait 2 seconds
+
+                            }
+
+                            $('#modal_code_select').empty().append('<option value="">Choisir le code de l\'appartement</option>')
+                            $.each(data, function(i, item) {
+                                $('#modal_code_select').append($('<option>', {
+                                    value: item.id,
+                                    text: item.code
+                                }));
+                            });
+
+                        } catch (error) {
+                            console.log(error)
+
+                        }
+
+                    },
+                    error: function(data) {
+                        console.log(data)
+                        // location.reload();
+                        $("#modal_screeresult").html("Il s'est produite une erreur");
+                        // $('#submit').html("Connexion").prop("disabled", false);
+
+                    },
+                });
+
+
+            });
+
+
             $('#modal_code_select').on('change', function() {
                 var id = this.value
                 $.ajax({
@@ -461,9 +629,9 @@
                         try {
                             let data = JSON.parse(response).data
 
-                            $('#modal_amount').val(data.price);
+                            $('#modal_amount').val(data.amount);
                             $('#modal_paid_amount').val(0);
-                            $('#modal_rest').val(data.price);
+                            $('#modal_rest').val(data.amount);
 
 
                         } catch (error) {
@@ -480,6 +648,54 @@
 
                     },
                 });
+
+            });
+
+            $('#contrat_file').change(function(e) {
+                let file = e.target.files[0];
+
+                if (file.size > 5000000) {
+                    $("#file_screeresult").html("Votre fichier ne doit pas dépasser 5Mb");
+                    $("#file_screeresult").show();
+
+                    $("#file_screeresult").removeClass("alert alert-success");
+                    $("#file_screeresult").removeClass("alert alert-danger");
+                    $("#file_screeresult").addClass("alert alert-danger");
+
+                    setTimeout(function() {
+                        $("#file_screeresult").hide();
+
+                    }, 2000); //wait 2 seconds
+                    $('#submit').prop("disabled", true);
+                } else {
+
+                    $('#submit').prop("disabled", false);
+
+                }
+
+            });
+
+            $('#modal_contrat_file').change(function(e) {
+                let file = e.target.files[0];
+
+                if (file.size > 5000000) {
+                    $("#modal_file_screeresult").html("Votre fichier ne doit pas dépasser 5Mb");
+                    $("#modal_file_screeresult").show();
+
+                    $("#modal_file_screeresult").removeClass("alert alert-success");
+                    $("#modal_file_screeresult").removeClass("alert alert-danger");
+                    $("#modal_file_screeresult").addClass("alert alert-danger");
+
+                    setTimeout(function() {
+                        $("#modal_file_screeresult").hide();
+
+                    }, 2000); //wait 2 seconds
+                    $('#modal_submit').prop("disabled", true);
+                } else {
+
+                    $('#modal_submit').prop("disabled", false);
+
+                }
 
             });
 
@@ -557,23 +773,23 @@
                 let rest = amount - this.value
                 if (rest > 0) {
                     $('#modal_rest').val(rest);
-                    $("#modal-screeresult").hide();
-                    $('#modal-submit').prop("disabled", false);
+                    $("#modal_screeresult").hide();
+                    $('#modal_submit').prop("disabled", false);
 
 
                 } else {
                     $('#modal_rest').val(0);
-                    $("#modal-screeresult").html("Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
-                    $("#modal-screeresult").show();
+                    $("#modal_screeresult").html("Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
+                    $("#modal_screeresult").show();
 
-                    $("#modal-screeresult").removeClass("alert alert-success");
-                    $("#modal-screeresult").removeClass("alert alert-danger");
-                    $("#modal-screeresult").addClass("alert alert-danger");
+                    $("#modal_screeresult").removeClass("alert alert-success");
+                    $("#modal_screeresult").removeClass("alert alert-danger");
+                    $("#modal_screeresult").addClass("alert alert-danger");
                     setTimeout(function() {
-                        $("#modal-screeresult").hide();
+                        $("#modal_screeresult").hide();
 
                     }, 2000); //wait 2 seconds
-                    $('#modal-submit').prop("disabled", true);
+                    $('#modal_submit').prop("disabled", true);
 
 
                 }
@@ -665,8 +881,7 @@
 
         function add_historic() {
 
-            var frm = $('#historic-form');
-
+            // var frm = $('#historic-form');
 
             let start_time = $("#start_time").val();
 
@@ -676,13 +891,30 @@
 
             $("#stay_length").val(stay_length);
 
+
+            var data = new FormData();
+
+            //Form data
+            var form_data = $('#historic-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+
+            //File data
+            var file_data = $('input[name="contrat_file"]')[0].files[0];
+            data.append("contrat_file", file_data);
+
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{ route('addAppartHistoric') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
                     $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
                 },
@@ -694,6 +926,8 @@
 
                         if (data.success) {
                             $('#historic-form')[0].reset();
+                            $("#contrat_file").val(null);
+
                             $("#screeresult").html(data.message);
                             $("#screeresult").show();
 
@@ -706,6 +940,7 @@
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
+                            $('#submit').html('Enregistrer').prop("disabled", false);
 
                         } else {
                             $("#screeresult").html(data.message);
@@ -767,7 +1002,8 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -830,13 +1066,13 @@
                                 "data": "status",
                                 render: function(data, type, row, meta) {
                                     if (data == "TERMINE") {
-                                        return "<div class='badge badge-success h1'>Terminé</div>";
+                                        return "<div class='badge badge-success'><h8>Terminé</h8></div>";
 
                                     } else if (data == "EN COURS") {
-                                        return "<div class='badge badge-info h1'> En cours</div>  ";
+                                        return "<div class='badge badge-info'> <h8>En cours</h8></div>  ";
 
                                     } else if (data == "REVERVE") {
-                                        return "<div class='badge badge-warning h1'> Réservé</div>  ";
+                                        return "<div class='badge badge-warning'> <h8>Réservé</h8></div>  ";
                                     } else {
                                         console.log(data)
                                         return ''
@@ -844,7 +1080,7 @@
                                 },
                             },
                             {
-                                "targets": -7,
+                                "targets": -6,
                                 "data": "end_time",
                                 render: function(data, type, row, meta) {
                                     if (row.end_time) {
@@ -857,7 +1093,7 @@
                             },
                             {
 
-                                "targets": -8,
+                                "targets": -7,
                                 "data": "start_time",
                                 render: function(data, type, row, meta) {
                                     if (row.start_time) {
@@ -878,61 +1114,39 @@
         }
 
         function update_historic() {
-            var frm = $('#modal-historic-form');
+
 
             let start_time = $("#modal_start_time").val();
             let end_time = $("#modal_end_time").val();
 
-            let start_date = moment(start_time, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY HH:mm:ss');
+            let stay_length = getDateDiff(start_time, end_time)
 
-            let end_date = moment(end_time, 'YYYY-MM-DD HH:mm').format('DD-MM-YYYY HH:mm:ss');
-
-
-            start_date = moment(start_date, 'DD-MM-YYYY HH:mm:ss')
-
-            end_date = moment(end_date, 'DD-MM-YYYY HH:mm:ss')
-
-
-            let seconds_result = end_date.diff(start_date, 'seconds')
-            let minutes_result = end_date.diff(start_date, 'minutes')
-            let hours_result = end_date.diff(start_date, 'hours')
-            let days_result = end_date.diff(start_date, 'days')
-            let months_result = end_date.diff(start_date, 'months')
-            let years_result = end_date.diff(start_date, 'years')
-
-            let stay_length
-
-
-            if (seconds_result < 0) {
-
-                stay_length = 0
-
-            } else if (seconds_result > 3153600) {
-
-                stay_length = years_result + ' An(s)'
-
-            } else if (seconds_result > 2419200) {
-
-                stay_length = months_result + ' Mois'
-
-            } else if (seconds_result > 86400) {
-
-                stay_length = days_result + ' Jours'
-
-            } else if (seconds_result > 3600) {
-
-                stay_length = hours_result + ' Heure(s)'
-
-            } else if (seconds_result >= 60) {
-
-                stay_length = minutes_result + 'Minute(s)'
-
-            } else if (seconds_result < 60) {
-                0
-                stay_length = seconds_result + ' Seconde(s)'
-            }
 
             $("#modal_stay_length").val(stay_length);
+
+            // var frm = $('#modal-historic-form');
+
+            var data = new FormData();
+
+            //Form data
+            var form_data = $('#modal-historic-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+            var file_data = $("#modal_contrat_file")[0].files[0];
+            data.append("contrat_file", file_data);
+
+            // console.log(file_data)
+            // //File data
+            // try {
+            //     var file_data = $("#modal_contrat_file")[1].files[0];
+            //     data.append("contrat_file", file_data);
+            // } catch (error) {
+
+            // }
+
+
 
             $.ajax({
                 headers: {
@@ -940,45 +1154,47 @@
                 },
                 url: '{{ route('updateAppartHistoric') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
                     console.log(data)
-                    $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#modal_submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
                 },
                 success: function(data) {
-                    $('#modal-submit').html('connexion').prop("disabled", false);
+                    $('#modal_submit').html('connexion').prop("disabled", false);
 
 
                     try {
 
                         if (data.success) {
 
-                            $("#modal-screeresult").html(data.message);
-                            $("#modal-screeresult").show();
+                            $("#modal_screeresult").html(data.message);
+                            $("#modal_screeresult").show();
 
-                            $("#modal-screeresult").removeClass("alert alert-success");
-                            $("#modal-screeresult").removeClass("alert alert-danger");
-                            $("#modal-screeresult").addClass("alert alert-success");
+                            $("#modal_screeresult").removeClass("alert alert-success");
+                            $("#modal_screeresult").removeClass("alert alert-danger");
+                            $("#modal_screeresult").addClass("alert alert-success");
                             setTimeout(function() {
-                                $("#modal-screeresult").hide();
+                                $("#modal_screeresult").hide();
                                 loadHistoric();
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
-                            $('#modal-submit').html('Enregistrer').prop("disabled", false);
+                            $('#modal_submit').html('Enregistrer').prop("disabled", false);
 
                         } else {
-                            $("#modal-screeresult").html(data.message);
-                            $("#modal-screeresult").show();
+                            $("#modal_screeresult").html(data.message);
+                            $("#modal_screeresult").show();
 
-                            $("#modal-screeresult").removeClass("alert alert-success");
-                            $("#modal-screeresult").removeClass("alert alert-danger");
-                            $("#modal-screeresult").addClass("alert alert-danger");
+                            $("#modal_screeresult").removeClass("alert alert-success");
+                            $("#modal_screeresult").removeClass("alert alert-danger");
+                            $("#modal_screeresult").addClass("alert alert-danger");
                             setTimeout(function() {
-                                $("#modal-screeresult").hide();
+                                $("#modal_screeresult").hide();
 
                             }, 2000); //wait 2 seconds
 
-                            $('#modal-submit').html('Enregistrer').prop("disabled", false);
+                            $('#modal_submit').html('Enregistrer').prop("disabled", false);
 
                         }
 
@@ -1040,22 +1256,31 @@
                         $("#modal_rest").prop('readonly', true);
                         $("#modal_end_time").prop('readonly', true);
                         $("#modal_occupant").prop('readonly', true);
+                        $("#modal_day_amount").attr('readonly', true);
+                        $("#modal_cni_number").prop('readonly', true);
+                        $("#modal_expire_date").prop('readonly', true);
+
                         $('#select_div').hide();
                         $('#last_appart').show();
+                        $('#contratView').show();
+                        $("#modal_contrat_file").hide()
 
                         $('#appart_check').prop("checked", false);
                         $('#appart_check_div').hide()
 
                         $('#modal_appart_hist_id').val(data.id);
                         $('#modal_start_time').val(data.start_time);
-                        $('#modal_amount').val(data.price);
+                        $('#modal_amount').val(data.amount);
                         $('#modal_paid_amount').val(data.paid_amount);
                         $('#modal_rest').val(data.rest);
                         $('#modal_end_time').val(data.end_time);
                         $('#modal_occupant').val(data.occupant);
                         $('#last_appart_choose').val(data.code);
-                        $('#modal-submit').hide();
-
+                        $("#modal_day_amount").val(data.day_amount);
+                        $("#modal_cni_number").val(data.cni_number);
+                        $("#modal_expire_date").val(data.expire_date);
+                        $('#modal_submit').hide();
+                        $("#contratView").prop('value', data.contrat_file);
 
                     } catch (error) {
                         console.log(error)
@@ -1071,6 +1296,10 @@
 
                 },
             });
+        });
+        $('#contratView').click(function() {
+            window.open(this.value, '_blank');
+
         });
 
         $('table').on('click', 'button#actionEdit', function() {
@@ -1101,27 +1330,46 @@
                         $("#modal_end_time").prop('readonly', false);
                         $("#modal_occupant").prop('readonly', false);
                         $("#modal_code_select").prop('required', false);
+                        $("#modal_day_amount").prop('readonly', true);
+                        $("#modal_cni_number").prop('readonly', false);
+                        $("#modal_expire_date").prop('readonly', false);
+
+                        $("#modal_end_time").prop('readonly', true)
+                        $("#modal_start_time").prop('readonly', true)
 
 
                         $('#last_appart').show();
                         $('#select_div').hide();
                         $('#appart_check').prop("checked", false);
                         $('#appart_check_div').show()
+                        $('#contratView').hide();
+                        $("#modal_contrat_file").show()
+
 
 
                         $('#modal_appart_hist_id').val(data.id);
                         $('#modal_start_time').val(data.start_time);
-                        $('#modal_amount').val(data.price);
+                        $('#modal_amount').val(data.amount);
                         $('#modal_paid_amount').val(data.paid_amount);
                         $('#modal_rest').val(data.rest);
                         $('#modal_end_time').val(data.end_time);
                         $('#modal_occupant').val(data.occupant);
                         $('#last_appart_choose').val(data.code);
-                        $('#modal_appart_id').val(data.appart_id)
+                        $('#modal_appart_id').val(data.appart_id);
 
+                        $("#modal_day_amount").val(data.day_amount);
+                        $("#modal_cni_number").val(data.cni_number);
+                        $("#modal_expire_date").val(data.expire_date);
 
+                        var str = data.contrat_file
+                        // get everything after last dash
 
-                        $('#modal-submit').show()
+                        const slug = str.split('/').pop();
+                        // console.log(slug)
+
+                        // $("#modal_contrat_file").val("text.png");
+
+                        $('#modal_submit').show()
 
                     } catch (error) {
                         console.log(error)
@@ -1155,11 +1403,85 @@
 
         }
 
+
+        function expireChange() {
+            let today = new Date()
+            let expire_date
+
+            if ($("#expire_date").val()) {
+                expire_date = formatDate($("#expire_date").val())
+            }
+
+            today = moment(today);
+            expire_date = moment(expire_date);
+
+            if (!today.isBefore(expire_date)) {
+
+                $("#expire_screeresult").html("La date d'expiration doit être supérieure  à la date d'aujourd'hui");
+                $("#expire_screeresult").show();
+
+
+                $("#expire_screeresult").removeClass("alert alert-success");
+                $("#expire_screeresult").removeClass("alert alert-danger");
+                $("#expire_screeresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#expire_screeresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#submit').prop("disabled", true);
+
+            } else {
+                $('#submit').prop("disabled", false);
+
+            }
+        }
+
+        function expireModalChange() {
+            let today = new Date()
+            let expire_date
+
+            if ($("#modal_expire_date").val()) {
+                expire_date = formatDate($("#modal_expire_date").val())
+            }
+
+            today = moment(today);
+            expire_date = moment(expire_date);
+
+            if (!today.isBefore(expire_date)) {
+
+                $("#modal_expire_screeresult").html("La date d'expiration doit être supérieure  à la date d'aujourd'hui");
+                $("#modal_expire_screeresult").show();
+
+
+                $("#modal_expire_screeresult").removeClass("alert alert-success");
+                $("#modal_expire_screeresult").removeClass("alert alert-danger");
+                $("#modal_expire_screeresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#modal_expire_screeresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#modal_submit').prop("disabled", true);
+
+            } else {
+                $('#modal_submit').prop("disabled", false);
+
+            }
+        }
+
         function startChange() {
             $('#submit').prop("disabled", false);
             $("#end_time").prop('disabled', false)
+            // let formatDate = moment($("#start_time").val()).subtract(0, "hour").format("DD-MM-YYYY HH:mm:ss");
+
+        }
 
 
+
+        function startModalChange() {
+            $('#modal_submit').prop("disabled", false);
+            $("#modal_end_time").prop('readonly', false)
             // let formatDate = moment($("#start_time").val()).subtract(0, "hour").format("DD-MM-YYYY HH:mm:ss");
 
         }
@@ -1215,6 +1537,52 @@
 
         }
 
+        function endModalChange() {
+            let start_time
+            let end_time
+
+
+            if ($("#modal_end_time").val()) {
+                end_time = formatDate($("#modal_end_time").val())
+            }
+
+            start_time = formatDate($("#modal_start_time").val())
+
+            var beginningTime = moment(start_time);
+            var endTime = moment(end_time);
+
+
+            //test if end date is after begin date
+            if (beginningTime.isBefore(endTime)) {
+
+                let nbr_day = getDayDiff(start_time, end_time)
+
+                let type = $('#modal_type_select').val()
+
+                getModalAmoutPerDay(nbr_day, type)
+
+                $('#modal_submit').prop("disabled", false);
+                $("#modal_other_check_div").show()
+
+            } else {
+                $("#modal_screeresult").html("Veuillez renseigner une date supérieure à la date de début de séjour");
+                $("#modal_screeresult").show();
+                $("#modal_other_check_div").hide()
+
+                $("#modal_screeresult").removeClass("alert alert-success");
+                $("#modal_screeresult").removeClass("alert alert-danger");
+                $("#modal_screeresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#modal_screeresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#modal_submit').prop("disabled", true);
+
+            }
+
+        }
+
 
         function formatDate(str) {
             // return moment(str).subtract(0, "hour").format("YYYY-MM-DD[T]HH:mm:ss");
@@ -1241,6 +1609,34 @@
                     $('#day_amount').val(data.amount)
                     $('#amount').val(data.amount * nbr_day)
                     $('#rest').val(data.amount)
+
+
+                }
+
+            });
+
+        }
+
+        function getModalAmoutPerDay(nbr_day, type) {
+
+            let result
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('getIndiceByTypeDays') }}',
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    type: type,
+                    min_nbr_day: nbr_day
+                },
+                success: function(response) {
+                    let data = JSON.parse(response).data
+
+                    $('#modal_day_amount').val(data.amount)
+                    $('#modal_amount').val(data.amount * nbr_day)
+                    $('#modal_rest').val(data.amount)
 
 
                 }

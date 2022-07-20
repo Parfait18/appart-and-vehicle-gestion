@@ -51,7 +51,7 @@
 
             <h2 class="text-center mb-4">Enregistrer une nouvelle activité</h2>
 
-            <div id="screeresult" role="alert">
+            <div id="screenresult" role="alert">
             </div>
 
             <form id="historic-form" action="javascript:add_historic()">
@@ -98,7 +98,7 @@
                                     <th>
                                         Matricule
                                     </th>
-                                    <th>Nom && couleur</th>
+                                    <th>Nom & couleur</th>
                                     <th>Heure de départ</th>
                                     <th>Heure d'arrivée</th>
                                     <th>Durée de conduite</th>
@@ -135,7 +135,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="modal-screeresult" role="alert">
+                            <div id="modal-screenresult" role="alert">
                             </div>
                             <form id="modal-historic-form" action="javascript:update_historic()">
 
@@ -167,7 +167,7 @@
 
                                 <div class="mb-3">
                                     <label for="arrival_time" class="form-label" required> Heure d'arrivée de la voiture</label>
-                                    <input id="modal_arrival_time" type="datetime-local" name="arrival_time" class="form-control datetimepicker">
+                                    <input id="modal_arrival_time" type="datetime-local" name="arrival_time" class="form-control datetimepicker" onchange="endChange()">
 
                                 </div>
 
@@ -182,7 +182,7 @@
                                 </div>
 
                                 <button type="modal-submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a id="close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
+                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
 
                             </form>
 
@@ -224,12 +224,12 @@
 
     <script>
         $(document).ready(function() {
-            moment.locale('en')
+            moment.locale('fr')
 
             loadHistoric()
             getMatriculesList()
             $("#new_vehicle_div").hide();
-            $("#screeresult").hide()
+            $("#screenresult").hide()
 
 
             $('#new_vehicle_btn').click(function() {
@@ -261,6 +261,82 @@
 
             chargeRecapDate()
 
+        });
+
+        $('#close_modal').click(function() {
+
+            $("#matricul_select").val("");
+
+            $('#matricul_select').trigger('change');
+        });
+
+        function endChange() {
+
+
+            let start_time
+            let end_time
+
+
+            if ($("#modal_arrival_time").val()) {
+                end_time = formatDate($("#modal_arrival_time").val())
+            }
+
+            start_time = formatDate($("#modal_start_time").val())
+
+            var beginningTime = moment(start_time, "DD-MM-YYYY, h:mm:ss");
+            var endTime = moment(end_time, "DD-MM-YYYY, h:mm:ss");
+
+            console.log(start_time, end_time)
+            //test if end date is after begin date
+            if (beginningTime.isBefore(endTime)) {
+
+                $('#modal-submit').prop("disabled", false);
+
+            } else {
+                console.log("zeazrazer")
+                $("#modal-screenresult").html("Veuillez renseigner une heure supérieure à l'heure de départ");
+                $("#modal-screenresult").show();
+
+                $("#modal-screenresult").removeClass("alert alert-success");
+                $("#modal-screenresult").removeClass("alert alert-danger");
+                $("#modal-screenresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#modal-screenresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#modal-submit').prop("disabled", true);
+
+            }
+
+        }
+
+
+        $("#modal_arrival_km").keyup(function() {
+            let start_km = Number($("#modal_start_km").val())
+
+
+            let end_km = Number(this.value)
+
+            if (start_km >= end_km) {
+
+
+                $("#modal-screenresult").html("Veuillez renseigner un km supérieure au km de départ");
+                $("#modal-screenresult").show();
+
+                $("#modal-screenresult").removeClass("alert alert-success");
+                $("#modal-screenresult").removeClass("alert alert-danger");
+                $("#modal-screenresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#modal-screenresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#modal-submit').prop("disabled", true);
+            } else {
+                $('#modal-submit').prop("disabled", false);
+            }
+            // this.value = this.value.toLocaleUpperCase();
         });
 
         function chargeRecapDate() {
@@ -342,30 +418,38 @@
 
                         if (data.success) {
                             $('#historic-form')[0].reset();
-                            $("#screeresult").html(data.message);
-                            $("#screeresult").show();
+                            $("#screenresult").html(data.message);
+                            $("#screenresult").show();
 
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-success");
+                            $("#screenresult").removeClass("alert alert-success");
+                            $("#screenresult").removeClass("alert alert-danger");
+                            $("#screenresult").addClass("alert alert-success");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#screenresult").hide();
                                 loadHistoric();
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
+                            $("#matricul_select").val("");
+
+                            $('#matricul_select').trigger('change');
+
+
+                            $('#submit').html('Enregistrer').prop("disabled", false);
+
 
                         } else {
-                            $("#screeresult").html(data.message);
-                            $("#screeresult").show();
+                            $("#screenresult").html(data.message);
+                            $("#screenresult").show();
 
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-danger");
+                            $("#screenresult").removeClass("alert alert-success");
+                            $("#screenresult").removeClass("alert alert-danger");
+                            $("#screenresult").addClass("alert alert-danger");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#screenresult").hide();
 
                             }, 2000); //wait 2 seconds
+
 
                             $('#submit').html('Enregistrer').prop("disabled", false);
 
@@ -374,17 +458,17 @@
 
 
                     } catch (error) {
-                        $("#screeresult").show();
+                        $("#screenresult").show();
 
-                        $("#screeresult").removeClass("alert alert-success");
-                        $("#screeresult").removeClass("alert alert-danger");
-                        $("#screeresult").addClass("alert alert-danger");
+                        $("#screenresult").removeClass("alert alert-success");
+                        $("#screenresult").removeClass("alert alert-danger");
+                        $("#screenresult").addClass("alert alert-danger");
                         setTimeout(function() {
-                            $("#screeresult").hide();
+                            $("#screenresult").hide();
 
                         }, 2000); //wait 2 seconds
 
-                        // $("#screeresult").html('Une erreur s\'est produite veuillez ressayer').show();
+                        // $("#screenresult").html('Une erreur s\'est produite veuillez ressayer').show();
 
                     }
 
@@ -392,7 +476,7 @@
                 error: function(data) {
 
                     // location.reload();
-                    // $("#screeresult").html(data.message);
+                    // $("#screenresult").html(data.message);
                     // $('#submit').html("Connexion").prop("disabled", false);
 
                 },
@@ -415,7 +499,8 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -482,10 +567,13 @@
                                 render: function(data, type, row, meta) {
                                     // console.log(data)
                                     if (data == "EN COURS") {
-                                        return "<div class='badge badge-success h1'>En cours </div>";
+                                        return "<div class='badge badge-info'><h8>En cours</h8> </div>";
 
-                                    } else {
-                                        return "<div class='badge badge-danger h1'> TERMINE</div>  ";
+                                    } else if (data == "RESERVE") {
+                                        return "<div class='badge badge-warning'> <h8>RESERVE</h8></div>  ";
+
+                                    } else if (data == "TERMINE") {
+                                        return "<div class='badge badge-success'> <h8>TERMINE</h8></div>  ";
 
                                     }
                                 },
@@ -613,28 +701,29 @@
 
                         if (data.success) {
 
-                            $("#modal-screeresult").html(data.message);
-                            $("#modal-screeresult").show();
+                            $("#modal-screenresult").html(data.message);
+                            $("#modal-screenresult").show();
 
-                            $("#modal-screeresult").removeClass("alert alert-success");
-                            $("#modal-screeresult").removeClass("alert alert-danger");
-                            $("#modal-screeresult").addClass("alert alert-success");
+                            $("#modal-screenresult").removeClass("alert alert-success");
+                            $("#modal-screenresult").removeClass("alert alert-danger");
+                            $("#modal-screenresult").addClass("alert alert-success");
                             setTimeout(function() {
-                                $("#modal-screeresult").hide();
+                                $("#modal-screenresult").hide();
                                 loadHistoric();
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
+                            $('#modal-submit').html('Enregistrer').prop("disabled", false);
 
                         } else {
-                            $("#modal-screeresult").html(data.message);
-                            $("#modal-screeresult").show();
+                            $("#modal-screenresult").html(data.message);
+                            $("#modal-screenresult").show();
 
-                            $("#modal-screeresult").removeClass("alert alert-success");
-                            $("#modal-screeresult").removeClass("alert alert-danger");
-                            $("#modal-screeresult").addClass("alert alert-danger");
+                            $("#modal-screenresult").removeClass("alert alert-success");
+                            $("#modal-screenresult").removeClass("alert alert-danger");
+                            $("#modal-screenresult").addClass("alert alert-danger");
                             setTimeout(function() {
-                                $("#modal-screeresult").hide();
+                                $("#modal-screenresult").hide();
 
                             }, 2000); //wait 2 seconds
 
@@ -648,17 +737,17 @@
 
 
                     } catch (error) {
-                        $("#screeresult").show();
+                        $("#screenresult").show();
 
-                        $("#screeresult").removeClass("alert alert-success");
-                        $("#screeresult").removeClass("alert alert-danger");
-                        $("#screeresult").addClass("alert alert-danger");
+                        $("#screenresult").removeClass("alert alert-success");
+                        $("#screenresult").removeClass("alert alert-danger");
+                        $("#screenresult").addClass("alert alert-danger");
                         setTimeout(function() {
-                            $("#screeresult").hide();
+                            $("#screenresult").hide();
 
                         }, 2000); //wait 2 seconds
 
-                        // $("#screeresult").html('Une erreur s\'est produite veuillez ressayer').show();
+                        // $("#screenresult").html('Une erreur s\'est produite veuillez ressayer').show();
 
                     }
 
@@ -666,7 +755,7 @@
                 error: function(data) {
 
                     // location.reload();
-                    // $("#screeresult").html(data.message);
+                    // $("#screenresult").html(data.message);
                     // $('#submit').html("Connexion").prop("disabled", false);
 
                 },
@@ -725,7 +814,7 @@
                 error: function(data) {
                     console.log(data)
                     // location.reload();
-                    $("#screeresult").html(data.message);
+                    $("#screenresult").html(data.message);
                     $('#submit').html("Connexion").prop("disabled", false);
 
                 },
@@ -782,7 +871,7 @@
                 error: function(data) {
 
                     // location.reload();
-                    // $("#screeresult").html(data.message);
+                    // $("#screenresult").html(data.message);
                     // $('#submit').html("Connexion").prop("disabled", false);
 
                 },

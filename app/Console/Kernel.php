@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('udapteData')->everyMinute();
+        $schedule->command('command:udapteAppart')->everyMinute();
     }
 
     /**

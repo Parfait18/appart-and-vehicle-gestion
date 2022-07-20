@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndicePriceController;
 use App\Http\Controllers\Vehicles\VehicleController;
 use App\Http\Controllers\Vehicles\VehicleHistoricController;
+use App\Http\Controllers\Vehicles\VehicleRepairController;
 use App\Http\Controllers\Vehicles\VehiclesRecapController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     Route::post('/get-indice', [IndicePriceController::class, 'getIndiceByTypeDays'])->name('getIndiceByTypeDays');
+
+    //repair
+    Route::get('/vehicle-repair', [VehicleRepairController::class, 'indexRepair'])->name('repairIndex');
+    Route::get('/list-repair', [VehicleRepairController::class, 'getRepairs'])->name('getRepairs');
+    Route::post('/add-repair', [VehicleRepairController::class, 'store'])->name('addRepair');
+    Route::post('/get-repair', [VehicleRepairController::class, 'getRepairById'])->name('getRepairById');
+    Route::post('/get-repair', [VehicleRepairController::class, 'getRepairById'])->name('getRepairById');
+    Route::post('/update-repair', [VehicleRepairController::class, 'updateRepair'])->name('updateRepair');
+
+
 
 
 

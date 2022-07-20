@@ -9,6 +9,7 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
+    <link rel="icon" href="{{ asset('assets/img/logo_resto.png') }}">
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('assets/modules/jqvmap/dist/jqvmap.min.css') }}">
@@ -18,8 +19,8 @@
 
     <!-- Template CSS -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-11.3.min.js') }}"></script>
 
 
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -45,9 +46,61 @@
     <script src="{{ asset('assets/modules/moment.min.js') }}"></script>
 
     <style>
-        .badge.badge-success {
-            background-color: #33a346 !important;
+        .navbar-bg {
+            background-color: rgb(163 10 10 / 75%);
         }
+
+        .main-sidebar .sidebar-menu li.active a {
+            color: rgb(163 10 10 / 75%);
+        }
+
+        body.sidebar-mini .main-sidebar .sidebar-menu>li.active>a {
+            box-shadow: 0 4px 8px #acb5f6;
+            background-color: #c82d35;
+            color: #fff;
+        }
+
+        .btn-primary,
+        .btn-primary.disabled {
+            background-color: #48aaff !important;
+            font-size: 15px;
+            padding: 6px;
+            border-color: #48aaff !important;
+
+        }
+
+        .btn-primary:hover,
+        .btn-primary.disabled :hover {
+            background-color: #48aaff !important;
+            font-size: 15px;
+            padding: 6px;
+            border-color: #48aaff !important;
+
+        }
+
+        .btn-danger {
+            background-color: rgb(163 10 10 / 75%);
+            font-size: 15px;
+
+        }
+
+        bg-primary {
+
+            background-color: #38bd4e !important;
+        }
+
+        .badge.badge-success,
+        .btn-success,
+        .btn-success.disabled {
+            background-color: #05af21 !important;
+            padding: -6px;
+            padding-top: 6px;
+            padding-right: 6px;
+            padding-bottom: 6px;
+            padding-left: 6px;
+        }
+
+
 
         .custum-border {
             /* background: linear-gradient(to right, #06a3da 4px, transparent 4px) 0 0,
@@ -84,6 +137,36 @@
             font-weight: 900 !important;
             font-size: 1rem;
         }
+
+        /*
+        #first-card {
+            background-color: #48aaff;
+            color: white !important;
+        }
+
+        #second-card {
+            background-color: #ffb100;
+            color: white !important;
+        }
+
+        #third-card {
+            background-color: #20b941;
+            color: white !important;
+        }
+
+        #forth-card {
+            background-color: #48aaff;
+            color: white !important;
+        }
+
+        #first-card {
+            background-color: #48aaff;
+            color: white !important;
+        }
+
+        .text-muted {
+            color: #ffffff !important;
+        } */
     </style>
     <!-- /END GA -->
 </head>

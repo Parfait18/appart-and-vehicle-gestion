@@ -22,14 +22,18 @@ class AppartementHistoricSeeder extends Seeder
             'end_time' =>  Carbon::today()->addDays(2),
             'stay_length' => '2 jours',
             'caution' => 5000,
-            "amount" => 4000,
-            "paid_amount" => 2000,
-            'rest' => 2000,
-            'ca_daily' => 5000,
+            "amount" => 160000,
+            "paid_amount" => 100000,
+            "day_amount" => 80000,
+            'rest' => 60000,
+            'ca_daily' => 80000,
             'user_id' => 2,
             'appart_id' => 1,
             'occupant' => "Tony Stark",
-            'status' => 'EN COURS'
+            'cni_number' => 57575,
+            'expire_date' => Carbon::today()->addDays(10),
+            'status' => 'EN COURS',
+            'contrat_file' => '/storage/app/public/file.pdf'
 
 
 

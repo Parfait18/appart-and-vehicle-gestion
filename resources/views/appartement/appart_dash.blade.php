@@ -143,7 +143,7 @@
                         <div class="modal-body">
                             <div id="modal-screeresult" role="alert">
                             </div>
-                            <form id="modal-appart-form" action="javascript:update_appart()">
+                            <form enctype="multipart/form-data" method="post" id="modal-appart-form" action="javascript:update_appart()">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom de l'appartement</label>
@@ -163,7 +163,7 @@
                                 <div class="mb-3">
                                     <div id="modal-type-select-div" class="form-group">
                                         <label for="type" class="form-label">Type de l'appartement</label>
-                                        <select id="modal_type_select" class="form-control select2" name="type" style="width: 100%!important" required>
+                                        <select id="modal_type_select" class="form-control select2" name="type" style="width: 100%!important">
                                             <option value="">Choisir le type de l'appartement</option>
                                             <option value="RV1">RV1</option>
                                             <option value="RV2">RV2</option>
@@ -187,7 +187,7 @@
                                 </div>
 
                                 <button type="submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a type="button" class="text-white btn btn-warning" data-dismiss="modal">Close</a>
+                                <a type="button" id="close_modal" class="text-white btn btn-warning" data-dismiss="modal">Close</a>
 
 
                             </form>
@@ -268,7 +268,18 @@
 
             chargeRecapDate()
 
+
+            $('#close_modal').click(function() {
+
+                $("#modal_type_select").val("");
+
+                $('#modal_type_select').trigger('change');
+            });
+
+
+
         });
+
 
         function chargeRecapDate() {
 
@@ -392,7 +403,8 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -416,7 +428,7 @@
                                 "data": "code"
                             },
                             {
-                                "data": "status"
+                                "data": "current_state"
                             },
                             {
                                 "data": "id"
@@ -434,14 +446,17 @@
                             },
                             {
                                 "targets": -2,
-                                "data": "status",
+                                "data": "current_state",
                                 render: function(data, type, row, meta) {
-                                    // console.log(data)
-                                    if (data == 1) {
-                                        return "<div class='badge badge-success h1'>En activité </div>";
+                                    console.log(data)
+                                    if (data == 'RESERVE') {
+                                        return "<div class='badge badge-info'> <h8>Réservé</h8> </div>";
 
-                                    } else {
-                                        return "<div class='badge badge-danger h1'> Suspendu</div>  ";
+                                    } else if (data == 'OCCUPE') {
+                                        return "<div class='badge badge-danger'> <h8>Occupé</h8></div>  ";
+
+                                    } else if (data == 'LIBRE') {
+                                        return "<div class='badge badge-success'><h8> Libre</h8></div>  ";
 
                                     }
                                 },
@@ -456,8 +471,7 @@
         }
 
         function update_appart() {
-            console.log("aezazedaze")
-            var frm = $('#modal-appart-form');
+
 
             if ($('#status_check').is(":checked")) {
                 $("#hidden_check").val(1)
@@ -465,13 +479,35 @@
                 $("#hidden_check").val(0)
             }
 
+
+            //Form data
+            var data = new FormData();
+            var form_data = $('#modal-appart-form').serializeArray();
+
+
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+
+            if (!$('#modal_type_select').val()) {
+                var type = $('#modal-type').val()
+                data.set("type", type);
+            }
+
+
+
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{ route('updateAppart') }}',
                 method: 'POST',
-                data: frm.serialize(),
+
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
                     console.log(data)
                     $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
@@ -496,6 +532,7 @@
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
+                            $('#modal-submit').html('Enregistrer').prop("disabled", false);
 
                         } else {
                             $("#modal-screeresult").html(data.message);
@@ -637,6 +674,7 @@
 
                         $('#modal-name').val(data.name);
                         $('#modal-code').val(data.code);
+                        $('#modal-type').val(data.type)
                         // $('#modal-price').val(data.price);
                         $('#modal-submit').show();
 

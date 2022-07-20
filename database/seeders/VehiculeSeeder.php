@@ -22,7 +22,9 @@ class VehiculeSeeder extends Seeder
             'color' => 'red',
             'matricule' => 'CIV123',
             'status' => 1,
-            "current_state" => "OCCUPE"
+            "current_state" => "OCCUPE",
+            "vehicle_file" => "http://127.0.0.1:8000/storage/historic/0001/AC_1_1657720612_2-img.jpg",
+            "conductor_file" => "http://127.0.0.1:8000/storage/historic/0001/AC_1_1657720612_2-img.jpg"
 
         ]);
 
@@ -31,7 +33,9 @@ class VehiculeSeeder extends Seeder
             'color' => 'blue',
             'matricule' => 'CIV143',
             'status' => 1,
-            "current_state" => "LIBRE"
+            "current_state" => "LIBRE",
+            "vehicle_file" => "http://127.0.0.1:8000/storage/historic/0001/AC_1_1657720612_2-img.jpg",
+            "conductor_file" => "http://127.0.0.1:8000/storage/historic/0001/AC_1_1657720612_2-img.jpg"
         ]);
     }
 }

@@ -5,7 +5,8 @@
 
         <section class="section">
             <div class="section-header">
-                <h3 class="text-center mt-5">Bienvenue sur votre dashboard cher <b> {{ Auth::user()->name }}</b></h3>
+                <h3 class="text-center mt-5">Bienvenue sur votre dashboard cher <span style="font-size: 30px;font-weight:600;">{{ Auth::user()->name }}</span>
+                </h3>
             </div>
         </section>
         @if (Auth::user()->role == 'appartement' || Auth::user()->role === 'admin')
@@ -22,7 +23,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Total des appartements</h4>
+                                    <h3>Total des appartements</h3>
                                 </div>
 
                             </div>
@@ -37,7 +38,7 @@
 
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Appartements en activité</h4>
+                                    <h3>Appartements en activité</h3>
                                 </div>
 
                             </div>
@@ -52,7 +53,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Appartements Disponibles</h4>
+                                    <h3>Appartements Disponibles</h3>
                                 </div>
 
                             </div>
@@ -66,7 +67,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Appartements hors service</h4>
+                                    <h3>Appartements hors service</h3>
                                 </div>
 
                             </div>
@@ -90,7 +91,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Total des voitures</h4>
+                                    <h3>Total des voitures</h3>
                                 </div>
 
                             </div>
@@ -104,7 +105,7 @@
 
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Voitures en activité</h4>
+                                    <h3>Voitures en activité</h3>
                                 </div>
 
                             </div>
@@ -118,7 +119,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Voitures Disponibles</h4>
+                                    <h3>Voitures Disponibles</h3>
                                 </div>
 
                             </div>
@@ -131,7 +132,7 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Voitures hors service</h4>
+                                    <h3>Voitures hors service</h3>
                                 </div>
 
                             </div>

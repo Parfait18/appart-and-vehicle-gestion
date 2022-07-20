@@ -62,7 +62,7 @@
             <div id="screeresult" role="alert">
             </div>
 
-            <form id="vehicle-form" action="javascript:AddVehicle()">
+            <form enctype="multipart/form-data" method="post" id="vehicle-form" action="javascript:AddVehicle()">
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom de la voiture</label>
@@ -70,12 +70,22 @@
 
                 </div>
                 <div class="mb-3">
-                    <label for="matricule" class="form-label" required>Matricule</label>
+                    <label for="matricule" class="form-label" required>Immatriculation</label>
                     <input type="text" class="form-control" name="matricule" id="matricule" placeholder="Matricule de la voiture" required>
                 </div>
                 <div class="mb-3">
                     <label for="color" class="form-label" required>Couleur de la voiture</label>
                     <input type="text" class="form-control" id="color" name="color"placeholder="Couleur de la voiture" required>
+                </div>
+                <div class="mb-3">
+                    <label for="vehicle_file" class="form-label">Photo de la voiture</label>
+
+                    <input class="form-control" name="vehicle_file" type="file" id="vehicle_file" accept="image/*" required />
+                </div>
+                <div class="mb-3">
+                    <label for="conductor_file" class="form-label">Photo du conducteur</label>
+
+                    <input class="form-control" name="conductor_file" type="file" id="conductor_file" accept="image/*" required />
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -95,9 +105,9 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        Matricule
+                                        Immatriculation
                                     </th>
-                                    <th>Nom && couleur</th>
+                                    <th>Nom & couleur</th>
 
                                     <th>Statut</th>
                                     <th>Etat actuel</th>
@@ -131,7 +141,7 @@
                         <div class="modal-body">
                             <div id="modal-screeresult" role="alert">
                             </div>
-                            <form id="modal-vehicle-form" action="javascript:update_vehicle()">
+                            <form enctype="multipart/form-data" method="post" id="modal-vehicle-form" action="javascript:update_vehicle()">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom de la voiture</label>
@@ -156,8 +166,20 @@
                                     </label>
                                     <input id="hidden_check" type="hidden" name="status" value="0" />
                                 </div>
+                                <div class="mb-3">
+                                    <label for="vehicle_file" class="form-label"> Photo de la voiture</label>
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="vehicleFileView"> Voir <i class="
+                                    fa fa-eye"></i></button>
+                                    <input class="form-control" name="vehicle_file" type="file" id="modal_vehicle_file" accept="image/*" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="conductor_file" class="form-label"> Photo du conducteur</label>
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="conductorFileView"> Voir <i class="
+                                    fa fa-eye"></i></button>
+                                    <input class="form-control" name="conductor_file" type="file" id="modal_conductor_file" accept="image/*" />
+                                </div>
                                 <button type="submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a type="button" class="text-white btn btn-warning" data-dismiss="modal">Close</a>
+                                <a type="button" id="modal_close_btn" class="text-white btn btn-warning" data-dismiss="modal">Close</a>
 
 
                             </form>
@@ -226,9 +248,16 @@
                 $("#new_vehicle_div").hide();
                 $("#new_vehicle_btn").show();
 
+                $("#vehicle_file").val(null);
+                $("#conductor_file").val(null);
 
                 $('#vehicle-form')[0].reset();
 
+            });
+
+            $('#modal_close_btn').click(function() {
+                $("#modal_vehicle_file").val(null);
+                $("#modal_conductor_file").val(null);
             });
 
             $('#matricule').keyup(function() {
@@ -268,7 +297,23 @@
         }
 
         function AddVehicle() {
-            var frm = $('#vehicle-form');
+            // var frm = $('#vehicle-form');
+
+            var data = new FormData();
+
+            //Form data
+            var form_data = $('#vehicle-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+
+            //File data
+            var file_vehicle = $('input[name="vehicle_file"]')[0].files[0];
+            var file_conductor = $('input[name="conductor_file"]')[0].files[0];
+            data.append("vehicle_file", file_vehicle);
+            data.append("conductor_file", file_conductor);
+
 
             $.ajax({
                 headers: {
@@ -276,7 +321,9 @@
                 },
                 url: '{{ route('addVehicle') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
                     $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
                 },
@@ -288,6 +335,8 @@
 
                         if (data.success) {
                             $('#vehicle-form')[0].reset();
+                            $("#vehicle_file").val(null);
+                            $("#conductor_file").val(null);
                             $("#screeresult").html(data.message);
                             $("#screeresult").show();
 
@@ -300,7 +349,7 @@
                                 chargeRecapDate();
                             }, 3000); //wait 2 seconds
 
-                            $('#modal-submit').html('Enregistrer').prop("disabled", false);
+                            $('#submit').html('Enregistrer').prop("disabled", false);
 
                         } else {
                             $("#screeresult").html(data.message);
@@ -365,7 +414,8 @@
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'excelHtml5',
-                            text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            text: '<i class="mdi mdi-file-excel"></i> Exporter',
+                            className: 'btn btn-primary'
                         }, ],
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
@@ -414,10 +464,10 @@
                                 render: function(data, type, row, meta) {
 
                                     if (data == 1) {
-                                        return "<div class='badge badge-success h1'>En activité </div>";
+                                        return "<div class='badge badge-success'><h8>En activité </h8> </div>";
 
                                     } else {
-                                        return "<div class='badge badge-danger h1'> Suspendu</div>  ";
+                                        return "<div class='badge badge-danger'><h8> Suspendu </h8></div>  ";
 
                                     }
                                 },
@@ -428,10 +478,10 @@
                                 render: function(data, type, row, meta) {
 
                                     if (data == "LIBRE") {
-                                        return "<div class='badge badge-success h1'>LIBRE </div>";
+                                        return "<div class='badge badge-success'>LIBRE </div>";
 
                                     } else {
-                                        return "<div class='badge badge-danger h1'> OCCUPÉE</div>  ";
+                                        return "<div class='badge badge-danger'> OCCUPÉE</div>  ";
 
                                     }
                                 },
@@ -455,7 +505,6 @@
         }
 
         function update_vehicle() {
-            var frm = $('#modal-vehicle-form');
 
             if ($('#status_check').is(":checked")) {
                 $("#hidden_check").val(1)
@@ -463,13 +512,30 @@
                 $("#hidden_check").val(0)
             }
 
+            //Form data
+            var data = new FormData();
+            var form_data = $('#modal-vehicle-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
+            //File data
+            var file_vehicle = $('input[name="vehicle_file"]')[1].files[0];
+            var file_conductor = $('input[name="conductor_file"]')[1].files[0];
+
+            data.append("vehicle_file", file_vehicle);
+            data.append("conductor_file", file_conductor);
+
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{ route('updateVehicle') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                processData: false,
+                contentType: false,
+                data: data,
                 beforeSend: function(data) {
                     console.log(data)
                     $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
@@ -576,9 +642,19 @@
 
 
 
+                        $('#vehicleFileView').show();
+                        $("#modal_vehicle_file").hide()
+
+                        $('#conductorFileView').show();
+                        $("#modal_conductor_file").hide()
+
                         $('#modal-name').val(data.name);
                         $('#modal-matricule').val(data.matricule);
                         $('#modal-color').val(data.color);
+
+                        $('#vehicleFileView').prop('value', data.vehicle_file);
+                        $('#conductorFileView').prop('value', data.conductor_file);
+
 
 
                         if (data.status) {
@@ -587,11 +663,7 @@
                             $('#status_check').prop("checked", false);
                         }
 
-
                         $('#modal-submit').hide();
-
-
-
 
                     } catch (error) {
                         console.log(error)
@@ -607,6 +679,16 @@
 
                 },
             });
+        });
+
+        $('#vehicleFileView').click(function() {
+            window.open(this.value, '_blank');
+
+        });
+
+        $('#conductorFileView').click(function() {
+            window.open(this.value, '_blank');
+
         });
 
         $('table').on('click', 'button#actionEdit', function() {
@@ -631,6 +713,12 @@
                         $("#modal-matricule").prop('readonly', true);
                         $("#modal-color").prop('readonly', false);
                         $('#status_check').prop("disabled", false);
+
+                        $('#vehicleFileView').hide();
+                        $("#modal_vehicle_file").show()
+
+                        $('#conductorFileView').hide();
+                        $("#modal_conductor_file").show()
 
                         if (data.status) {
                             $('#status_check').prop("checked", true);

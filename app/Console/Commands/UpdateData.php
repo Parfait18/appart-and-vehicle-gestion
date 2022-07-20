@@ -15,14 +15,14 @@ class UpdateData extends Command
      *
      * @var string
      */
-    protected $signature = 'command:udapteData';
+    protected $signature = 'command:udapteAppart';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update historic to already pass, or pending or reserved';
+    protected $description = 'Update historic to already pass, or pending or reserved appart';
 
     /**
      * Execute the console command.
@@ -33,12 +33,17 @@ class UpdateData extends Command
     {
         $all_apprt_historic =  AppartementHistoric::all();
         $all_apprt =  Appartement::all();
-        $today = Carbon::now();
 
 
         foreach ($all_apprt_historic as $item) {
+            $this->info($item->end_time);
 
-            if ($today->gt($item->end_time)) {
+            $start_time = Carbon::parse($item->start_time);
+            $end_time = Carbon::parse($item->end_time);
+            $today = Carbon::now()->addHour(1);
+
+
+            if ($today->gt($end_time)) {
 
                 Appartement::where('id', $item->appart_id)
                     ->update([
@@ -49,17 +54,17 @@ class UpdateData extends Command
 
                     'status' => 'TERMINE'
                 ]);
-            } else if ($item->start_time->lt($today) && $today->lt($item->end_time)) {
-                Appartement::where('id', $$item->appart_id)
+            } else if ($start_time->lte($today) && $today->lt($end_time)) {
+                Appartement::where('id', $item->appart_id)
                     ->update([
                         'current_state' => 'OCCUPE'
                     ]);
-                AppartementHistoric::where('id', $$item->id)->update([
+                AppartementHistoric::where('id', $item->id)->update([
                     'status' => 'EN COURS'
                 ]);
-            } else if ($item->start_time->gt($today) && $today->lt($item->end_time)) {
+            } else if ($start_time->gt($today) && $today->lt($end_time)) {
 
-                Appartement::where('id', $$item->appart_id)
+                Appartement::where('id', $item->appart_id)
                     ->update([
                         'current_state' => 'RESERVE'
                     ]);
@@ -68,5 +73,7 @@ class UpdateData extends Command
                 ]);
             }
         }
+
+        $this->info("Successfully appartement's data  updated !! ");
     }
 }

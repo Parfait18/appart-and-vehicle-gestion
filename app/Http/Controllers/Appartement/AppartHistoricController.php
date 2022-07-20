@@ -6,8 +6,10 @@ use App\Http\Controllers\BaseController;
 use App\Models\Appartement;
 use App\Models\AppartementHistoric;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AppartHistoricController extends BaseController
 {
@@ -33,14 +35,23 @@ class AppartHistoricController extends BaseController
             'occupant' => 'required',
             "amount" => 'required',
             "paid_amount" => 'required',
+            "day_amount" => 'required',
             'rest' => 'required',
             'appart_id' => 'required',
+            'cni_number' => 'required',
+            'expire_date' => 'required',
+            'contrat_file' => 'required'
+
         ]);
+        date_default_timezone_set('UTC');
+
 
 
         $start_time = Carbon::parse($request->start_time);
         $end_time = Carbon::parse($request->end_time);
-        $today = Carbon::now();
+        $today = Carbon::now()->addHour(1);
+
+        $historic_create = null;
 
         if ($today->gt($end_time)) {
             Appartement::where('id', $request->appart_id)
@@ -55,14 +66,17 @@ class AppartHistoricController extends BaseController
                 'occupant' =>   $request->occupant,
                 "amount" =>   $request->amount,
                 "paid_amount" =>   $request->paid_amount,
+                "day_amount" =>  $request->day_amount,
                 'rest' =>   $request->rest,
                 'appart_id' =>   $request->appart_id,
                 'user_id' => $user_id,
                 'ca_daily' => $request->paid_amount,
                 'caution' => 55555,
+                'cni_number' => $request->cni_number,
+                'expire_date' => $request->expire_date,
                 'status' => 'TERMINE'
             ]);
-        } else if ($start_time->lt($today) && $today->lt($end_time)) {
+        } else if ($start_time->lte($today) && $today->lt($end_time)) {
             //date of today is less than start date
             Appartement::where('id', $request->appart_id)
                 ->update([
@@ -79,13 +93,16 @@ class AppartHistoricController extends BaseController
                 'rest' =>   $request->rest,
                 'appart_id' =>   $request->appart_id,
                 'ca_daily' => $request->paid_amount,
+                "day_amount" =>  $request->day_amount,
                 'user_id' => $user_id,
                 'caution' => 55555,
+                'cni_number' => $request->cni_number,
+                'expire_date' => $request->expire_date,
                 'status' => 'EN COURS'
             ]);
         } else if ($start_time->gt($today) && $today->lt($end_time)) {
 
-            // return $start_time->gt($today);
+
 
             Appartement::where('id', $request->appart_id)
                 ->update([
@@ -99,13 +116,43 @@ class AppartHistoricController extends BaseController
                 'occupant' =>   $request->occupant,
                 "amount" =>   $request->amount,
                 "paid_amount" =>   $request->paid_amount,
+                "day_amount" =>  $request->day_amount,
                 'rest' =>   $request->rest,
                 'appart_id' =>   $request->appart_id,
                 'ca_daily' => $request->paid_amount,
                 'user_id' => $user_id,
                 'caution' => 55555,
+                'cni_number' => $request->cni_number,
+                'expire_date' => $request->expire_date,
                 'status' => 'REVERVE'
             ]);
+        }
+
+
+        if ($historic_create) {
+
+
+            $path = 'historic/000' . $historic_create->id;
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path, 0775, true); //creates directory
+            }
+
+            if (Storage::exists($path)) {
+
+                if ($request->hasFile('contrat_file')) {
+
+                    $contrat = $request->file('contrat_file');
+                    $contrat_name = 'AC_' . $historic_create->id . '_' . time() . '_' . $contrat->getClientOriginalName();
+                    $path_contrat = $request->file('contrat_file')->storeAs($path, $contrat_name);
+
+                    if (!Str::contains($contrat->getClientOriginalName(), 'AC_')) {
+
+                        AppartementHistoric::where('id', $historic_create->id)->update([
+                            'contrat_file' =>  asset(Storage::url($path_contrat)),
+                        ]);
+                    }
+                }
+            }
         }
 
         return  $this->sendResponse("Enregistrement réussi", $historic_create);
@@ -160,17 +207,22 @@ class AppartHistoricController extends BaseController
             'stay_length' => 'required',
             'occupant' => 'required',
             "amount" => 'required',
+            "day_amount" => 'required',
             "paid_amount" => 'required',
             'rest' => 'required',
             'id' => 'required',
             'last_id' => 'required',
+            'cni_number' => 'required',
+            'expire_date' => 'required',
+
         ]);
 
 
 
         $start_time = Carbon::parse($request->start_time);
         $end_time = Carbon::parse($request->end_time);
-        $today = Carbon::now();
+        $today = Carbon::now()->addHour(1);
+
         if ($request->appart_id) {
             if ($today->gt($end_time)) {
                 Appartement::where('id', $request->appart_id)
@@ -189,13 +241,16 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->appart_id,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     'caution' => 55555,
                     'status' => 'TERMINE'
                 ]);
-            } else if ($start_time->lt($today) && $today->lt($end_time)) {
+            } else if ($start_time->lte($today) && $today->lt($end_time)) {
                 //date of today is less than start date
                 Appartement::where('id', $request->appart_id)
                     ->update([
@@ -213,9 +268,12 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->appart_id,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     'caution' => 55555,
                     'status' => 'EN COURS'
                 ]);
@@ -236,9 +294,12 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->appart_id,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     'caution' => 55555,
                     'status' => 'REVERVE'
                 ]);
@@ -257,18 +318,21 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->last_id,
                     'caution' => 55555,
                     'status' => 'TERMINE'
                 ]);
-            } else if ($start_time->lt($today) && $today->lt($end_time)) {
+            } else if ($start_time->lte($today) && $today->lt($end_time)) {
                 //date of today is less than start date
 
                 Appartement::where('id', $request->last_id)
                     ->update([
-                        'current_state' => 'LIBRE'
+                        'current_state' => 'OCCUPE'
                     ]);
 
                 AppartementHistoric::where('id', $request->id)->update([
@@ -277,6 +341,9 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->last_id,
@@ -287,7 +354,7 @@ class AppartHistoricController extends BaseController
 
                 Appartement::where('id', $request->last_id)
                     ->update([
-                        'current_state' => 'LIBRE'
+                        'current_state' => 'RESERVE'
                     ]);
                 AppartementHistoric::where('id', $request->id)->update([
                     'start_time' =>   $request->start_time,
@@ -295,6 +362,9 @@ class AppartHistoricController extends BaseController
                     'stay_length' =>   $request->stay_length,
                     'occupant' =>   $request->occupant,
                     "amount" =>   $request->amount,
+                    "day_amount" =>  $request->day_amount,
+                    'cni_number' => $request->cni_number,
+                    'expire_date' => $request->expire_date,
                     "paid_amount" =>   $request->paid_amount,
                     'rest' =>   $request->rest,
                     'appart_id' =>   $request->last_id,
@@ -303,7 +373,30 @@ class AppartHistoricController extends BaseController
                 ]);
             }
         }
+        $historic_create =  AppartementHistoric::where('id', $request->id)->first();
 
+        if ($historic_create) {
+            $path = 'historic/000' . $request->id;
+            if (!Storage::exists($path)) {
+                Storage::makeDirectory($path, 0775, true); //creates directory
+            }
+
+            if (Storage::exists($path)) {
+
+                if ($request->hasFile('contrat_file')) {
+                    $contrat = $request->file('contrat_file');
+                    $contrat_name = 'AC_' . $request->id . '_' . time() . '_' . $contrat->getClientOriginalName();
+                    $path_contrat = $request->file('contrat_file')->storeAs($path, $contrat_name);
+
+                    if (!Str::contains($contrat->getClientOriginalName(), 'AC_')) {
+
+                        AppartementHistoric::where('id', $request->id)->update([
+                            'contrat_file' =>  asset(Storage::url($path_contrat)),
+                        ]);
+                    }
+                }
+            }
+        }
 
         return  $this->sendResponse("Enregistrement réussi");
     }
