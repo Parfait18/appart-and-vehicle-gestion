@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('repairs', function (Blueprint $table) {
             $table->id();
             $table->string('vehicle_matricule');
-            $table->timestamp('oil_change_date');
-            $table->timestamp('pneumatic_change_date');
-            $table->timestamp('brake_change_date');
+            $table->datetime('oil_change_date');
+            $table->datetime('pneumatic_change_date');
+            $table->datetime('brake_change_date');
             $table->timestamps();
         });
     }

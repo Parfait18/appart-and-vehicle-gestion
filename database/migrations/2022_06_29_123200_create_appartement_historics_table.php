@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('appartement_historics', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('start_time');
-            $table->timestamp('expire_date');
-            $table->timestamp('end_time');
+            $table->datetime('start_time');
+            $table->datetime('expire_date');
+            $table->datetime('end_time');
             $table->string('stay_length');
             $table->string('status');
             $table->unsignedBigInteger('caution');

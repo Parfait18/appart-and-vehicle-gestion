@@ -1,11 +1,14 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\Appartement;
+use App\Models\User;
 use App\Models\AppartementHistoric;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
 
 class AppartementHistoricSeeder extends Seeder
 {
@@ -17,6 +20,23 @@ class AppartementHistoricSeeder extends Seeder
     public function run()
     {
         //STATUS CAN TAKE EN COURS, TERMINE, REVERVE
+        $appart_one = Appartement::create([
+            'name' => 'Appart1',
+            'code' => '001/LH/APT001',
+            'type' => 'RV1',
+            "current_state" => "OCCUPE"
+        ]);
+
+        $agent_apt_meuble = User::create([
+            'name' => 'Agent Appartement',
+            'email' => 'appart@gmail.com',
+            'password' => Hash::make('password'),
+            'email_verified_at' => Carbon::today(),
+            'role' => 'appartement',
+            'status' => 1,
+            'password_changed_at' => Carbon::today()
+
+        ]);
         $historic_one = AppartementHistoric::create([
             'start_time' => Carbon::today(),
             'end_time' =>  Carbon::today()->addDays(2),
@@ -27,8 +47,8 @@ class AppartementHistoricSeeder extends Seeder
             "day_amount" => 80000,
             'rest' => 60000,
             'ca_daily' => 80000,
-            'user_id' => 2,
-            'appart_id' => 1,
+            'user_id' => $agent_apt_meuble->id,
+            'appart_id' => $appart_one->id,
             'occupant' => "Tony Stark",
             'cni_number' => 57575,
             'expire_date' => Carbon::today()->addDays(10),

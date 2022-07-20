@@ -17,13 +17,7 @@ class AppartementSeeder extends Seeder
     {
         //CURRENT STATE CAN BE FREE,OCCUPED OR RESERVED
 
-        $appart_one = Appartement::create([
-            'name' => 'Appart1',
-            'code' => '001/LH/APT001',
-            'type' => 'RV1',
-            "current_state" => "OCCUPE"
-        ]);
-
+      
         $appart_two = Appartement::create([
             'name' => 'Appart2',
             'code' => '002/GH/APT002',

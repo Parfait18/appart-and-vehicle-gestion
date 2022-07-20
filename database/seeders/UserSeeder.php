@@ -30,17 +30,7 @@ class UserSeeder extends Seeder
 
         ]);
 
-        $agent_apt_meuble = User::create([
-            'name' => 'Agent Appartement',
-            'email' => 'appart@gmail.com',
-            'password' => Hash::make('password'),
-            'email_verified_at' => Carbon::today(),
-            'role' => 'appartement',
-            'status' => 1,
-            'password_changed_at' => Carbon::today()
-
-        ]);
-
+      
         $agent_admin = User::create([
             'name' => 'Agent Admin',
             'email' => 'admin@gmail.com',

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('vehicle_historics', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('start_time')->nullable();
-            $table->timestamp('arrival_time')->nullable();
+            $table->datetime('start_time')->nullable();
+            $table->datetime('arrival_time')->nullable();
             $table->float('start_km')->nullable();
             $table->float('arrival_km')->nullable();
             $table->integer('amount_repaid')->nullable();
