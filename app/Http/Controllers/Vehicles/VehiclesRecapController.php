@@ -39,7 +39,10 @@ class VehiclesRecapController extends BaseController
                 'vehicles.current_state',
                 'vehicles.matricule'
             )
-            ->groupBy('matricule')
+            ->groupBy(
+                'vehicles.current_state',
+                'vehicles.matricule'
+            )
             ->get();
 
 

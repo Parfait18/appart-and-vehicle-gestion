@@ -39,7 +39,10 @@ class AppartRecapController extends Controller
                 'appartements.current_state',
                 'appartements.code'
             )
-            ->groupBy('code')
+            ->groupBy(
+                'appartements.current_state',
+                'appartements.code'
+            )
             ->get();
 
         //list to get vehicle who don't have hsitorique
