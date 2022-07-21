@@ -76,7 +76,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="start_km" class="form-label" required>Km départ de la voiture</label>
-                    <input type="number" class="form-control" id="start_km" name="start_km"placeholder="Km départ de la voiture" step="0.01" required>
+                    <input type="number" class="form-control" id="start_km" min="0" oninput="this.value = Math.abs(this.value)" name="start_km"placeholder="Km départ de la voiture" step="0.01" required>
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="start_km" class="form-label" required>Km départ de la voiture</label>
-                                    <input type="number" class="form-control" id="modal_start_km" name="start_km" placeholder="Km départ de la voiture" step="0.01" required>
+                                    <input type="number" class="form-control" oninput="this.value = Math.abs(this.value)" id="modal_start_km" min="0" name="start_km" placeholder="Km départ de la voiture" step="0.01" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -173,12 +173,12 @@
 
                                 <div class="mb-3">
                                     <label for="arrival_km" class="form-label" required>Km d'arrivée de la voiture</label>
-                                    <input type="number" class="form-control" id="modal_arrival_km" name="arrival_km" placeholder="Km d'arrivée de la voiture" step="0.01" required>
+                                    <input type="number" class="form-control" oninput="this.value = Math.abs(this.value)" id="modal_arrival_km" name="arrival_km" min="0" placeholder="Km d'arrivée de la voiture" step="0.01" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="amount_repaid" class="form-label" required>Montant reversé</label>
-                                    <input type="number" class="form-control" id="modal_amount_repaid" name="amount_repaid"placeholder="Montant reversé" required>
+                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_amount_repaid" name="amount_repaid"placeholder="Montant reversé" required>
                                 </div>
 
                                 <button type="modal-submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>

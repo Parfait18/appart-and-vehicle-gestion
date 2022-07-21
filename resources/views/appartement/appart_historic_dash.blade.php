@@ -276,21 +276,21 @@
                                 @endif
                                 <div class="mb-3">
                                     <label for="modal_day_amount" class="form-label" required>Prix par jour</label>
-                                    <input type="number" class="form-control" id="modal_day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
+                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="modal_amount" class="form-label" required>Prix total du séjour</label>
-                                    <input type="number" class="form-control" id="modal_amount" name="amount" placeholder="Prix total du séjour" step="1" readonly required>
+                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_amount" name="amount" placeholder="Prix total du séjour" step="1" readonly required>
                                 </div>
 
 
                                 <div class="mb-3">
                                     <label for="modal_paid_amount" class="form-label" required>Montant payé</label>
-                                    <input type="number" class="form-control" id="modal_paid_amount" value="0" name="paid_amount" placeholder="Montant payé" step="1" required>
+                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"id="modal_paid_amount" value="0" name="paid_amount" placeholder="Montant payé" step="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="modal_rest" class="form-label" required>Montant restant</label>
-                                    <input type="number" class="form-control" id="modal_rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
+                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
                                 </div>
 
 
