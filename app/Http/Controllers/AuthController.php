@@ -16,9 +16,13 @@ class AuthController extends Controller
 
     public static function index()
     {
+        if (Auth::check()) {
+            return Redirect('dashboard');
+        }else{
+             return view('auth.login');
+        }
 
-
-        return view('auth.login');
+       
     }
 
     public function login(Request $request)

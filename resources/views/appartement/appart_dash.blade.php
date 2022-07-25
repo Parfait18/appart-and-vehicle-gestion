@@ -110,6 +110,7 @@
                                     <th>
                                         Nom de l'appartement
                                     </th>
+                                    <th>Type</th>
                                     <th>Code</th>
 
                                     <th>Statut</th>
@@ -423,6 +424,9 @@
                             {
                                 "data": "name"
 
+                            },
+                            {
+                                "data": "type"
                             },
                             {
                                 "data": "code"

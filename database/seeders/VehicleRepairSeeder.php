@@ -16,12 +16,12 @@ class VehicleRepairSeeder extends Seeder
      */
     public function run()
     {
-        $repair = Repair::create([
+      /*  $repair = Repair::create([
             'vehicle_matricule' => 'CIV123',
             'oil_change_date' =>  Carbon::today(),
             'pneumatic_change_date' => Carbon::today(),
             'brake_change_date' => Carbon::today(),
 
-        ]);
+        ]);*/
     }
 }

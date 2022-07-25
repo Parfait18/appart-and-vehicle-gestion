@@ -28,6 +28,8 @@ Route::get('/', [AuthController::class, 'index'])->middleware(
     'guest:sanctum'
 );
 
+Route::get('/home', [AuthController::class, 'index']);
+
 // Inscription
 Route::post('/register', [AuthController::class, 'register'])->middleware('auth:sanctum');
 Route::get('/logout', [AuthController::class, 'signOut'])->name('logout');

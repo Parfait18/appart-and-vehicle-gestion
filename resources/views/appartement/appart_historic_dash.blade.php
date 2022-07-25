@@ -1039,7 +1039,9 @@
                             {
                                 "data": "stay_length"
                             },
-
+                            {
+                                "data": "amount"
+                            },
                             {
                                 "data": "paid_amount"
                             },
@@ -1080,7 +1082,7 @@
                                 },
                             },
                             {
-                                "targets": -6,
+                                "targets": -7,
                                 "data": "end_time",
                                 render: function(data, type, row, meta) {
                                     if (row.end_time) {
@@ -1093,7 +1095,7 @@
                             },
                             {
 
-                                "targets": -7,
+                                "targets": -8,
                                 "data": "start_time",
                                 render: function(data, type, row, meta) {
                                     if (row.start_time) {

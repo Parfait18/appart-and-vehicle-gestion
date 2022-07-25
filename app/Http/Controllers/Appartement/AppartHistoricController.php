@@ -102,8 +102,6 @@ class AppartHistoricController extends BaseController
             ]);
         } else if ($start_time->gt($today) && $today->lt($end_time)) {
 
-
-
             Appartement::where('id', $request->appart_id)
                 ->update([
                     'current_state' => 'RESERVE'

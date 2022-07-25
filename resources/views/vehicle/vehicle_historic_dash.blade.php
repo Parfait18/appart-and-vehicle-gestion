@@ -796,8 +796,11 @@
 
                         $('#modal_matricul_select').val(data.matricule);
                         $('#modal_start_time').val(data.start_time);
+                        $('#modal_arrival_time').val(data.arrival_time);
                         $('#modal_start_km').val(data.start_km);
-                        $('#modal_historic_id').val(data.id);
+                        $('#modal_arrival_km').val(data.arrival_km);
+                        $('#modal_arrival_km').val(data.arrival_km);
+                        $('#modal_amount_repaid').val(data.amount_repaid);
                         $('#modal_vehicle_id').val(data.vehicle_id);
 
                         $('#modal-submit').hide();

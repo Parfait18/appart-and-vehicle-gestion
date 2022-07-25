@@ -24,7 +24,7 @@ class AppartementHistoricSeeder extends Seeder
             'name' => 'Appart1',
             'code' => '001/LH/APT001',
             'type' => 'RV1',
-            "current_state" => "OCCUPE"
+            "current_state" => "LIBRE"
         ]);
 
         $agent_apt_meuble = User::create([
@@ -37,7 +37,9 @@ class AppartementHistoricSeeder extends Seeder
             'password_changed_at' => Carbon::today()
 
         ]);
-        $historic_one = AppartementHistoric::create([
+
+
+       /* $historic_one = AppartementHistoric::create([
             'start_time' => Carbon::today(),
             'end_time' =>  Carbon::today()->addDays(2),
             'stay_length' => '2 jours',
@@ -57,7 +59,7 @@ class AppartementHistoricSeeder extends Seeder
 
 
 
-        ]);
+        ]);*/
 
         // $historic_two = AppartementHistoric::create([
         //     'start_time' => Carbon::today(),
