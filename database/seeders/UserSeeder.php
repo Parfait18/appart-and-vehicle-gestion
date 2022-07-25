@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
 
         $agent_vehicul = User::create([
             'name' => 'Agent Vehicule',
-            'email' => 'vehicule@gmail.com',
+            'email' => 'vehicule@webcoomgroup.net',
             'password' => Hash::make('password'),
             'email_verified_at' => Carbon::today(),
             'role' => 'vehicule',
@@ -30,10 +30,10 @@ class UserSeeder extends Seeder
 
         ]);
 
-      
+
         $agent_admin = User::create([
             'name' => 'Agent Admin',
-            'email' => 'admin@gmail.com',
+            'email' => 'maxine.laine@webcoomgroup.net',
             'password' => Hash::make('password'),
             'email_verified_at' => Carbon::today(),
             'role' => 'admin',

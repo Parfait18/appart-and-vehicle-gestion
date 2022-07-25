@@ -18,21 +18,21 @@ class AppartementSeeder extends Seeder
         //CURRENT STATE CAN BE FREE,OCCUPED OR RESERVED
 
       
-        $appart_two = Appartement::create([
-            'name' => 'Appart2',
-            'code' => '002/GH/APT002',
-            'type' => 'RV2',
-            "current_state" => "LIBRE"
+        // $appart_two = Appartement::create([
+        //     'name' => 'Appart2',
+        //     'code' => '002/GH/APT002',
+        //     'type' => 'RV2',
+        //     "current_state" => "LIBRE"
 
-        ]);
+        // ]);
 
 
-        $appart_two = Appartement::create([
-            'name' => 'Appart3',
-            'code' => '001/LL/APT001',
-            'type' => 'STUDIO',
-            "current_state" => "LIBRE"
+        // $appart_two = Appartement::create([
+        //     'name' => 'Appart3',
+        //     'code' => '001/LL/APT001',
+        //     'type' => 'STUDIO',
+        //     "current_state" => "LIBRE"
 
-        ]);
+        // ]);
     }
 }
