@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Appartement;
 use App\Models\User;
 use App\Models\AppartementHistoric;
@@ -20,16 +21,16 @@ class AppartementHistoricSeeder extends Seeder
     public function run()
     {
         //STATUS CAN TAKE EN COURS, TERMINE, REVERVE
-        $appart_one = Appartement::create([
-            'name' => 'Appart1',
-            'code' => '001/LH/APT001',
-            'type' => 'RV1',
-            "current_state" => "LIBRE"
-        ]);
+        // $appart_one = Appartement::create([
+        //     'name' => 'Appart1',
+        //     'code' => '001/LH/APT001',
+        //     'type' => 'RV1',
+        //     "current_state" => "OCCUPE"
+        // ]);
 
         $agent_apt_meuble = User::create([
             'name' => 'Agent Appartement',
-            'email' => 'appart@gmail.com',
+            'email' => 'appart@webcoomgroup.net',
             'password' => Hash::make('password'),
             'email_verified_at' => Carbon::today(),
             'role' => 'appartement',
@@ -38,28 +39,27 @@ class AppartementHistoricSeeder extends Seeder
 
         ]);
 
-
-       /* $historic_one = AppartementHistoric::create([
-            'start_time' => Carbon::today(),
-            'end_time' =>  Carbon::today()->addDays(2),
-            'stay_length' => '2 jours',
-            'caution' => 5000,
-            "amount" => 160000,
-            "paid_amount" => 100000,
-            "day_amount" => 80000,
-            'rest' => 60000,
-            'ca_daily' => 80000,
-            'user_id' => $agent_apt_meuble->id,
-            'appart_id' => $appart_one->id,
-            'occupant' => "Tony Stark",
-            'cni_number' => 57575,
-            'expire_date' => Carbon::today()->addDays(10),
-            'status' => 'EN COURS',
-            'contrat_file' => '/storage/app/public/file.pdf'
-
+        // $historic_one = AppartementHistoric::create([
+        //     'start_time' => Carbon::today(),
+        //     'end_time' =>  Carbon::today()->addDays(2),
+        //     'stay_length' => '2 jours',
+        //     'caution' => 5000,
+        //     "amount" => 160000,
+        //     "paid_amount" => 100000,
+        //     "day_amount" => 80000,
+        //     'rest' => 60000,
+        //     'ca_daily' => 80000,
+        //     'user_id' => $agent_apt_meuble->id,
+        //     'appart_id' => $appart_one->id,
+        //     'occupant' => "Tony Stark",
+        //     'cni_number' => 57575,
+        //     'expire_date' => Carbon::today()->addDays(10),
+        //     'status' => 'EN COURS',
+        //     'contrat_file' => '/storage/app/public/file.pdf'
 
 
-        ]);*/
+
+        // ]);
 
         // $historic_two = AppartementHistoric::create([
         //     'start_time' => Carbon::today(),

@@ -19,21 +19,21 @@ class VehiculeHistoricSeeder extends Seeder
         //
 
 
-      /*  $historic_one = VehicleHistoric::create([
-            'start_time' => Carbon::today(),
-            'arrival_time' =>  Carbon::today()->addDays(1),
-            'start_km' => 12.5,
-            'arrival_km' => 23.5,
-            'amount_repaid' => 5000,
-            'ca_daily' => 8000,
-            'travel_time' => '1 heure',
-            'travel_km' => 8000,
-            'user_id' => 1,
-            'vehicle_id' => 1,
-            'status'=> "EN COURS"
+        // $historic_one = VehicleHistoric::create([
+        //     'start_time' => Carbon::today(),
+        //     'arrival_time' =>  Carbon::today()->addDays(1),
+        //     'start_km' => 12.5,
+        //     'arrival_km' => 23.5,
+        //     'amount_repaid' => 5000,
+        //     'ca_daily' => 8000,
+        //     'travel_time' => '1 heure',
+        //     'travel_km' => 8000,
+        //     'user_id' => 1,
+        //     'vehicle_id' => 1,
+        //     'status'=> "EN COURS"
 
 
-        ]);*/
+        // ]);
 
         // $historic_two = VehicleHistoric::create([
         //     'start_time' => Carbon::today(),
