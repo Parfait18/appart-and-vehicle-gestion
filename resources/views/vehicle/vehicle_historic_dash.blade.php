@@ -428,7 +428,8 @@
                                 $("#screenresult").hide();
                                 loadHistoric();
                                 chargeRecapDate();
-                            }, 3000); //wait 2 seconds
+                                getMatriculesList()
+                            }, 2000); //wait 2 seconds
 
                             $("#matricul_select").val("");
 
@@ -711,7 +712,8 @@
                                 $("#modal-screenresult").hide();
                                 loadHistoric();
                                 chargeRecapDate();
-                            }, 3000); //wait 2 seconds
+                                getMatriculesList()
+                            }, 2000); //wait 2 seconds
 
                             $('#modal-submit').html('Enregistrer').prop("disabled", false);
 
