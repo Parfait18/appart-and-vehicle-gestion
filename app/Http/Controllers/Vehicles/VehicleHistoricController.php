@@ -73,7 +73,7 @@ class VehicleHistoricController extends BaseController
                 'vehicle_historics.*',
             )
             // ->where('vehicles.status', 1)
-            ->whereBetween('vehicle_historics.created_at', [$last_two_month . ' 00:00:00', $this_month . ' 23:59:59'])
+            ->whereBetween('vehicle_historics.start_time', [$last_two_month . ' 00:00:00', $this_month . ' 23:59:59'])
             ->get();
 
         $reponse = json_encode(array('data' => $vehicle), TRUE);

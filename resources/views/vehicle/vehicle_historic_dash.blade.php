@@ -42,10 +42,44 @@
 
         </div>
     </div>
+    <div class="mx-auto ">
+
+        <h2 class="text-center m-4">Formulaire de Recherche</h2>
+
+        <div id="screeresult" role="alert">
+        </div>
+
+
+        <form id="search-form" action="javascript:search()">
+            @csrf <div class="row">
+                <div class="col-sm">
+                    <div class="">
+                        <label for="date_debut" class="form-label">Date de début</label>
+                        <input id="date_debut" type="date" name="date_debut" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="">
+                        <label for="date_fin" class="form-label">Date de fin</label>
+                        <input id="date_fin" type="date" name="date_fin" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-sm pt-4">
+                    <div class="pl-4">
+
+                        <button type="submit" id="submit" class="btn btn-primary">Rechercher</button>
+                        <a id="search_close" class="m-2 text-white btn btn-warning">Recharger les données</a>
+                    </div>
+                </div>
+        </form>
+
+    </div>
+
+
     <div class="row">
         <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle activité <i class="ml-3 fa fa-plus" aria-hidden="true"></i></button>
 
-        <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none">
+        <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none;margin-top:100px;">
 
 
 
@@ -86,9 +120,9 @@
         </div>
 
         <div class="col-12 mt-5">
-            <div class="card">
-                <div class="section-header">
-                    <h1>Listes des activités</h1>
+            <div clas s="card">
+                <div lass="section-header">
+                    <h1 id="title_datatable">Listes des activités de ce mois</h1>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -261,7 +295,18 @@
 
             chargeRecapDate()
 
+
+
         });
+
+        $('#search_close').click(function() {
+            $('#title_datatable').html("Listes des activitésde ce mois")
+            loadHistoric()
+            chargeRecapDate()
+        })
+
+
+
 
         $('#close_modal').click(function() {
 
@@ -269,6 +314,209 @@
 
             $('#matricul_select').trigger('change');
         });
+
+        function search() {
+
+
+            var frm = $('#search-form');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ route('getHistoric') }}',
+                method: 'POST',
+                data: frm.serialize(),
+                beforeSend: function(data) {
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                },
+                success: function(data) {
+                    $('#submit').html('connexion').prop("disabled", false);
+
+                    let result = JSON.parse(data).data
+
+
+                    try {
+
+                        if (result.length != 0) {
+                            $('#search-form')[0].reset();
+                            $("#screeresult").html("Recherche bien effecttuée");
+                            $("#screeresult").show();
+
+                            $('#title_datatable').html("Résultats de la recherche")
+
+                            $("#screeresult").removeClass("alert alert-success");
+                            $("#screeresult").removeClass("alert alert-danger");
+                            $("#screeresult").addClass("alert alert-success");
+                            setTimeout(function() {
+                                $("#screeresult").hide();
+                            }, 3000); //wait 2 seconds
+
+                            $('#submit').html('Enregistrer').prop("disabled", false);
+                        } else {
+                            $('#search-form')[0].reset();
+                            $("#screeresult").html("Aucune donné trouvée(s)");
+                            $("#screeresult").show();
+
+                            $('#title_datatable').html("Résultats de la recherche")
+
+                            $("#screeresult").removeClass("alert alert-success");
+                            $("#screeresult").removeClass("alert alert-danger");
+                            $("#screeresult").addClass("alert alert-warning");
+                            setTimeout(function() {
+                                $("#screeresult").hide();
+
+                            }, 2000); //wait 2 seconds
+
+                            $('#submit').html('Enregistrer').prop("disabled", false);
+
+                        }
+                        //datatable reload
+
+                        $('#vehicle-table').DataTable({
+                            destroy: true,
+                            responsive: true,
+                            orderCellsTop: true,
+                            // fixedHeader: true,
+                            dom: 'Bfrtip',
+                            buttons: [{
+                                extend: 'excelHtml5',
+                                text: '<i class="mdi mdi-file-excel"></i> Exporter'
+                            }, ],
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                            },
+                            "order": [
+                                [0, 'desc']
+                            ],
+                            "data": result,
+                            "columns": [
+
+                                {
+                                    "data": "matricule"
+
+                                },
+                                {
+                                    "data": "name"
+                                },
+                                {
+                                    "data": "start_time"
+                                },
+                                {
+                                    "data": "arrival_time"
+                                },
+                                {
+                                    "data": "travel_time"
+                                },
+                                {
+                                    "data": "start_km"
+                                },
+                                {
+                                    "data": "arrival_km"
+                                },
+                                {
+                                    "data": "travel_km"
+                                },
+                                {
+                                    "data": "ca_daily"
+                                },
+                                {
+                                    "data": "status"
+                                },
+                                {
+                                    "data": "id"
+                                },
+
+                            ],
+                            "columnDefs": [{
+                                    "targets": -1,
+                                    "data": "id",
+                                    render: function(data, type, row, meta) {
+                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
+
+                                        return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
+                                    },
+                                },
+                                {
+                                    "targets": -2,
+                                    "data": "status",
+                                    render: function(data, type, row, meta) {
+                                        // console.log(data)
+                                        if (data == "EN COURS") {
+                                            return "<div class='badge badge-info'><h8>En cours</h8> </div>";
+
+                                        } else if (data == "RESERVE") {
+                                            return "<div class='badge badge-warning'> <h8>RESERVE</h8></div>  ";
+
+                                        } else if (data == "TERMINE") {
+                                            return "<div class='badge badge-success'> <h8>TERMINE</h8></div>  ";
+
+                                        }
+                                    },
+                                },
+                                {
+
+                                    "targets": -10,
+                                    "data": "name",
+                                    render: function(data, type, row, meta) {
+                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
+                                        return row.name + " " + row.color + "";
+                                    },
+                                },
+                                {
+
+                                    "targets": -8,
+                                    "data": "arrival_time",
+                                    render: function(data, type, row, meta) {
+                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
+                                        if (row.travel_time) {
+                                            return this.formatDate(row.arrival_time);
+                                        } else {
+                                            return ''
+                                        }
+
+                                    },
+                                },
+                                {
+
+                                    "targets": -9,
+                                    "data": "start_time",
+                                    render: function(data, type, row, meta) {
+                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
+                                        if (row.start_time) {
+                                            return this.formatDate(row.start_time);
+                                        } else {
+                                            return ''
+                                        }
+
+                                    },
+                                },
+
+
+
+                            ]
+                        });
+
+                    } catch (error) {
+                        $("#screeresult").show();
+
+                        $("#screeresult").removeClass("alert alert-success");
+                        $("#screeresult").removeClass("alert alert-danger");
+                        $("#screeresult").addClass("alert alert-danger");
+                        $("#screeresult").html('Une erreur s\'est produite veuillez ressayer').show();
+
+                        setTimeout(function() {
+                            $("#screeresult").hide();
+
+                        }, 2000); //wait 2 seconds
+
+
+                    }
+
+
+                },
+            });
+        }
 
         function endChange() {
 
@@ -286,7 +534,7 @@
             var beginningTime = moment(start_time, "DD-MM-YYYY, h:mm:ss");
             var endTime = moment(end_time, "DD-MM-YYYY, h:mm:ss");
 
-            console.log(start_time, end_time)
+
             //test if end date is after begin date
             if (beginningTime.isBefore(endTime)) {
 
@@ -485,12 +733,17 @@
         }
 
         function loadHistoric() {
+            var frm = $('#search-form');
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '{{ route('getHistoric') }}',
-                method: 'GET',
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    data: frm.serialize(),
+                },
                 success: function(response) {
                     $('#vehicle-table').DataTable({
                         destroy: true,
@@ -509,12 +762,7 @@
                         "order": [
                             [0, 'desc']
                         ],
-                        "ajax": {
-                            url: "{{ route('getHistoric') }}",
-                            dataType: 'JSON'
-                        },
-
-                        "data": response.data,
+                        "data": JSON.parse(response).data,
                         "columns": [
 
                             {

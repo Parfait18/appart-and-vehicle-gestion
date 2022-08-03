@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //vehicle-historic route
     Route::get('/vehicle-historic-dash', [VehicleHistoricController::class, 'getVehicleActivities'])->name('vehicle_activites_dash');
     Route::post('/add-historic', [VehicleHistoricController::class, 'store'])->name('add_historic');
-    Route::get('/list-historic', [VehicleHistoricController::class, 'getHistoric'])->name('getHistoric');
+    Route::post('/list-historic', [VehicleHistoricController::class, 'getHistoric'])->name('getHistoric');
     Route::post('/get-historic', [VehicleHistoricController::class, 'getHistoricById'])->name('getHistoricById');
     Route::post('/update-historic', [VehicleHistoricController::class, 'updateHistoric'])->name('updateHistoric');
 
@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //appart-historic route
     Route::get('/appart-historic-dash', [AppartHistoricController::class, 'getAppartActivities'])->name('appart_activites_dash');
     Route::post('/add-appart-historic', [AppartHistoricController::class, 'store'])->name('addAppartHistoric');
-    Route::get('/list-appart-historic', [AppartHistoricController::class, 'getAppartHistoric'])->name('getAppartHistoric');
+    Route::post('/list-appart-historic', [AppartHistoricController::class, 'getAppartHistoric'])->name('getAppartHistoric');
     Route::post('/get-appart-historic', [AppartHistoricController::class, 'getAppartHistoricById'])->name('getAppartHistoricById');
     Route::post('/update-appart-historic', [AppartHistoricController::class, 'updateAppartHistoric'])->name('updateAppartHistoric');
 
