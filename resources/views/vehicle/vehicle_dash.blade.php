@@ -51,7 +51,8 @@
         </div>
     </div>
     <div class="row">
-        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle voiture <i class="ml-3 fa fa-plus" aria-hidden="true"></i></button>
+        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle voiture <i class="ml-3 fa fa-plus"
+                aria-hidden="true"></i></button>
 
         <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none">
 
@@ -66,26 +67,31 @@
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom de la voiture</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Nom de la voiture" aria-describedby="Nom de la voiture" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nom de la voiture"
+                        aria-describedby="Nom de la voiture" required>
 
                 </div>
                 <div class="mb-3">
                     <label for="matricule" class="form-label" required>Immatriculation</label>
-                    <input type="text" class="form-control" name="matricule" id="matricule" placeholder="Matricule de la voiture" required>
+                    <input type="text" class="form-control" name="matricule" id="matricule"
+                        placeholder="Matricule de la voiture" required>
                 </div>
                 <div class="mb-3">
                     <label for="color" class="form-label" required>Couleur de la voiture</label>
-                    <input type="text" class="form-control" id="color" name="color"placeholder="Couleur de la voiture" required>
+                    <input type="text" class="form-control" id="color"
+                        name="color"placeholder="Couleur de la voiture" required>
                 </div>
                 <div class="mb-3">
                     <label for="vehicle_file" class="form-label">Photo de la voiture</label>
 
-                    <input class="form-control" name="vehicle_file" type="file" id="vehicle_file" accept="image/*" required />
+                    <input class="form-control" name="vehicle_file" type="file" id="vehicle_file" accept="image/*"
+                        required />
                 </div>
                 <div class="mb-3">
                     <label for="conductor_file" class="form-label">Photo du conducteur</label>
 
-                    <input class="form-control" name="conductor_file" type="file" id="conductor_file" accept="image/*" required />
+                    <input class="form-control" name="conductor_file" type="file" id="conductor_file" accept="image/*"
+                        required />
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -129,7 +135,8 @@
 
             {{-- /modal --}}
 
-            <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -141,26 +148,31 @@
                         <div class="modal-body">
                             <div id="modal-screeresult" role="alert">
                             </div>
-                            <form enctype="multipart/form-data" method="post" id="modal-vehicle-form" action="javascript:update_vehicle()">
+                            <form enctype="multipart/form-data" method="post" id="modal-vehicle-form"
+                                action="javascript:update_vehicle()">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nom de la voiture</label>
-                                    <input type="text" class="form-control" id="modal-name" name="name" placeholder="Nom de la voiture" aria-describedby="Nom de la voiture" required>
+                                    <input type="text" class="form-control" id="modal-name" name="name"
+                                        placeholder="Nom de la voiture" aria-describedby="Nom de la voiture" required>
 
                                 </div>
                                 <div class="mb-3">
                                     <label for="matricule" class="form-label" required>Matricule</label>
-                                    <input type="text" class="form-control" name="matricule" id="modal-matricule" placeholder="Matricule de la voiture" required>
+                                    <input type="text" class="form-control" name="matricule" id="modal-matricule"
+                                        placeholder="Matricule de la voiture" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="color" class="form-label" required>Couleur de la voiture</label>
-                                    <input type="text" class="form-control" id="modal-color" name="color"placeholder="Couleur de la voiture" required>
+                                    <input type="text" class="form-control" id="modal-color"
+                                        name="color"placeholder="Couleur de la voiture" required>
                                 </div>
 
                                 <div class="mb-3 form-group">
                                     <div class="form-label">La Voiture est en service</div>
                                     <label class="custom-switch mt-2">
-                                        <input id="status_check" type="checkbox" name="status" class="custom-switch-input">
+                                        <input id="status_check" type="checkbox" name="status"
+                                            class="custom-switch-input">
                                         <span class="custom-switch-indicator"></span>
                                         <span class="custom-switch-description"> OUI</span>
                                     </label>
@@ -168,18 +180,25 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="vehicle_file" class="form-label"> Photo de la voiture</label>
-                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="vehicleFileView"> Voir <i class="
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white"
+                                        id="vehicleFileView"> Voir <i
+                                            class="
                                     fa fa-eye"></i></button>
-                                    <input class="form-control" name="vehicle_file" type="file" id="modal_vehicle_file" accept="image/*" />
+                                    <input class="form-control" name="vehicle_file" type="file"
+                                        id="modal_vehicle_file" accept="image/*" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="conductor_file" class="form-label"> Photo du conducteur</label>
-                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="conductorFileView"> Voir <i class="
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white"
+                                        id="conductorFileView"> Voir <i
+                                            class="
                                     fa fa-eye"></i></button>
-                                    <input class="form-control" name="conductor_file" type="file" id="modal_conductor_file" accept="image/*" />
+                                    <input class="form-control" name="conductor_file" type="file"
+                                        id="modal_conductor_file" accept="image/*" />
                                 </div>
                                 <button type="submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a type="button" id="modal_close_btn" class="text-white btn btn-warning" data-dismiss="modal">Close</a>
+                                <a type="button" id="modal_close_btn" class="text-white btn btn-warning"
+                                    data-dismiss="modal">Close</a>
 
 
                             </form>
@@ -325,7 +344,8 @@
                 contentType: false,
                 data: data,
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop(
+                        "disabled", true);
                 },
                 success: function(data) {
                     $('#submit').html('connexion').prop("disabled", false);
@@ -455,7 +475,10 @@
                                 render: function(data, type, row, meta) {
                                     // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
 
-                                    return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
+                                    return '<button value="' + data +
+                                        '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' +
+                                        data +
+                                        '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
                                 },
                             },
                             {
@@ -503,6 +526,56 @@
 
             });
         }
+        $('#vehicle_file').change(function(e) {
+            let file = e.target.files[0];
+
+            if (file.size > 2000000) {
+                $("#screeresult").html("Votre fichier ne doit pas dépasser 2Mb");
+                $("#screeresult").show();
+
+                $("#screeresult").removeClass("alert alert-success");
+                $("#screeresult").removeClass("alert alert-danger");
+                $("#screeresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#screeresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#submit').prop("disabled", true);
+
+
+            } else {
+
+                $('#submit').prop("disabled", false);
+
+            }
+
+        });
+        $('#conductor_file').change(function(e) {
+            let file = e.target.files[0];
+
+            if (file.size > 2000000) {
+                $("#screeresult").html("Votre fichier ne doit pas dépasser 2Mb");
+                $("#screeresult").show();
+
+                $("#screeresult").removeClass("alert alert-success");
+                $("#screeresult").removeClass("alert alert-danger");
+                $("#screeresult").addClass("alert alert-danger");
+
+                setTimeout(function() {
+                    $("#screeresult").hide();
+
+                }, 2000); //wait 2 seconds
+                $('#submit').prop("disabled", true);
+
+
+            } else {
+
+                $('#submit').prop("disabled", false);
+
+            }
+
+        });
 
         function update_vehicle() {
 
@@ -538,7 +611,8 @@
                 data: data,
                 beforeSend: function(data) {
                     console.log(data)
-                    $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>')
+                        .prop("disabled", true);
                 },
                 success: function(data) {
                     $('#modal-submit').html('connexion').prop("disabled", false);

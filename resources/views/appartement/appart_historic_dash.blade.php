@@ -55,7 +55,7 @@
 
         <h2 class="text-center m-4">Formulaire de Recherche</h2>
 
-        <div id="screeresult" role="alert">
+        <div id="search_screeresult" role="alert">
         </div>
 
 
@@ -76,7 +76,7 @@
                 <div class="col-sm pt-4">
                     <div class="pl-4">
 
-                        <button type="submit" id="submit" class="btn btn-primary">Rechercher</button>
+                        <button type="search_submit" id="search_submit" class="btn btn-primary">Rechercher</button>
                         <a id="search_close" class="m-2 text-white btn btn-warning">Recharger les données</a>
                     </div>
                 </div>
@@ -85,7 +85,8 @@
     </div>
 
     <div class="row">
-        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle activité <i class="ml-3 fa fa-plus" aria-hidden="true"></i></button>
+        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle activité <i class="ml-3 fa fa-plus"
+                aria-hidden="true"></i></button>
 
         <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none;margin-top:100px;">
 
@@ -102,7 +103,8 @@
 
                     <div class="form-group">
                         <label for="appart_type" class="form-label">Type de l'appartement</label>
-                        <select id="type_select" class="form-control select2" name="appart_type" style="width: 100%!important" required>
+                        <select id="type_select" class="form-control select2" name="appart_type"
+                            style="width: 100%!important" required>
                             <option value="">Choisir le type de l'appartement</option>
                             <option value="RV1">RV1</option>
                             <option value="RV2">RV2</option>
@@ -115,7 +117,8 @@
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="appart_id" class="form-label">Code de l'appartement</label>
-                        <select id="code_select" class="form-control select2" name="appart_id" style="width: 100%!important" required>
+                        <select id="code_select" class="form-control select2" name="appart_id"
+                            style="width: 100%!important" required>
                             <option value="">Choisir le code de l'appartement</option>
                         </select>
                     </div>
@@ -124,14 +127,16 @@
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="start_time" class="form-label" required>Date de début séjour</label>
-                        <input id="start_time" type="datetime-local" name="start_time" class="form-control" onchange="startChange();">
+                        <input id="start_time" type="datetime-local" name="start_time" class="form-control"
+                            onchange="startChange();">
                     </div>
 
                 </div>
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="end_time" class="form-label" required>Date de fin du séjour</label>
-                        <input id="end_time" type="datetime-local" name="end_time" class="form-control" onchange="endChange()">
+                        <input id="end_time" type="datetime-local" name="end_time" class="form-control"
+                            onchange="endChange()">
                     </div>
                 </div>
                 @if (Auth::check() & (Auth::user()->role == 'admin'))
@@ -146,31 +151,37 @@
                 @endif
 
                 <div class="mb-3">
-                    <label for="amount" class="form-label" required>Prix par jour</label>
-                    <input type="number" class="form-control" id="day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
+                    <label for="day_amount" class="form-label" required>Prix par jour</label>
+                    <input type="day_amount" class="form-control" id="day_amount" name="day_amount"
+                        placeholder="Prix par jour" step="1" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="amount" class="form-label" required>Prix total du séjour</label>
-                    <input type="number" class="form-control" id="amount" name="amount" placeholder="Montant total" step="1" readonly required>
+                    <input type="number" class="form-control" id="amount" name="amount"
+                        placeholder="Montant total" step="1" readonly required>
                 </div>
 
 
                 <div class="mb-3">
                     <label for="paid_amount" class="form-label" required>Montant payé</label>
-                    <input type="number" class="form-control" id="paid_amount" value="0" name="paid_amount" placeholder="Montant payé" step="1" required>
+                    <input type="number" class="form-control" id="paid_amount" value="0" name="paid_amount"
+                        placeholder="Montant payé" step="1" required>
                 </div>
                 <div class="mb-3">
                     <label for="rest" class="form-label" required>Montant restant</label>
-                    <input type="number" class="form-control" id="rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
+                    <input type="number" class="form-control" id="rest" value="0" name="rest"
+                        placeholder="Reste du montant" step="1" readonly required>
                 </div>
                 <div class="mb-3">
                     <label for="occupant" class="form-label">Nom du client</label>
-                    <input type="text" class="form-control" id="occupant" name="occupant" placeholder="Nom du client" aria-describedby="Nom du client" required>
+                    <input type="text" class="form-control" id="occupant" name="occupant"
+                        placeholder="Nom du client" aria-describedby="Nom du client" required>
                 </div>
                 <div class="mb-3">
                     <label for="cni_number" class="form-label">Numéro CNI</label>
-                    <input type="number" class="form-control" id="cni_number" name="cni_number" placeholder="Numéro de la carte d'identité" step="1" required>
+                    <input type="number" class="form-control" id="cni_number" name="cni_number"
+                        placeholder="Numéro de la carte d'identité" step="1" required>
                 </div>
 
                 <div class="mb-3">
@@ -178,7 +189,8 @@
                     </div>
                     <div class="form-group">
                         <label for="expire_date" class="form-label">Date d'expiration de la carte</label>
-                        <input id="expire_date" type="date" name="expire_date" class="form-control" required onchange="expireChange()">
+                        <input id="expire_date" type="date" name="expire_date" class="form-control" required
+                            onchange="expireChange()">
                     </div>
                 </div>
 
@@ -187,7 +199,8 @@
                     </div>
 
                     <label for="contrat_file" class="form-label">Fichier du contrat</label>
-                    <input class="form-control" name="contrat_file" type="file" id="contrat_file" accept="image/*,.pdf" required />
+                    <input class="form-control" name="contrat_file" type="file" id="contrat_file"
+                        accept="image/*,.pdf" required />
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -235,7 +248,8 @@
 
             {{-- /modal --}}
 
-            <div class="modal fade" id="appartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="appartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -247,11 +261,14 @@
                         <div class="modal-body">
                             <div id="modal_screeresult" role="alert">
                             </div>
-                            <form enctype="multipart/form-data" method="post" id="modal-historic-form" action="javascript:update_historic()">
+                            <form enctype="multipart/form-data" method="post" id="modal-historic-form"
+                                action="javascript:update_historic()">
 
                                 @csrf
-                                <input type="hidden" id="modal_stay_length" class="form-control" name="stay_length" required>
-                                <input type="hidden" id="modal_appart_hist_id" class="form-control" name="id" required>
+                                <input type="hidden" id="modal_stay_length" class="form-control" name="stay_length"
+                                    required>
+                                <input type="hidden" id="modal_appart_hist_id" class="form-control" name="id"
+                                    required>
                                 <input type="hidden" id="modal_appart_id" class="form-control" name="last_id" required>
 
                                 <div class="mb-3 form-group">
@@ -272,7 +289,8 @@
                                     <div id="select_div">
                                         <div class="form-group">
                                             <label for="appart_type" class="form-label">Type de l'appartement</label>
-                                            <select id="modal_type_select" class="form-control select2" name="appart_type" style="width: 100%!important">
+                                            <select id="modal_type_select" class="form-control select2"
+                                                name="appart_type" style="width: 100%!important">
                                                 <option value="">Choisir le type de l'appartement</option>
                                                 <option value="RV1">RV1</option>
                                                 <option value="RV2">RV2</option>
@@ -280,21 +298,26 @@
                                             </select>
                                         </div>
                                         <label for="modal_appart_id" class="form-label">Code de l'appartement</label>
-                                        <select id="modal_code_select" class="form-control select2" name="appart_id" style="width: 100%!important" required>
+                                        <select id="modal_code_select" class="form-control select2" name="appart_id"
+                                            style="width: 100%!important" required>
                                             <option value="">Choisir le code de l'appartement</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-group">
-                                        <label for="modal_start_time" class="form-label" required>Heure de début séjour</label>
-                                        <input id="modal_start_time" type="datetime-local" name="start_time" class="form-control" onchange="startModalChange();" required>
+                                        <label for="modal_start_time" class="form-label" required>Heure de début
+                                            séjour</label>
+                                        <input id="modal_start_time" type="datetime-local" name="start_time"
+                                            class="form-control" onchange="startModalChange();" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-group">
-                                        <label for="modal_end_time" class="form-label" required>Heure de fin du séjour</label>
-                                        <input id="modal_end_time" type="datetime-local" name="end_time" class="form-control" onchange="endModalChange()" required>
+                                        <label for="modal_end_time" class="form-label" required>Heure de fin du
+                                            séjour</label>
+                                        <input id="modal_end_time" type="datetime-local" name="end_time"
+                                            class="form-control" onchange="endModalChange()" required>
                                     </div>
                                 </div>
                                 @if (Auth::check() & (Auth::user()->role == 'admin'))
@@ -309,38 +332,50 @@
                                 @endif
                                 <div class="mb-3">
                                     <label for="modal_day_amount" class="form-label" required>Prix par jour</label>
-                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_day_amount" name="day_amount" placeholder="Prix par jour" step="1" required>
+                                    <input type="number" class="form-control" min="0"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_day_amount"
+                                        name="day_amount" placeholder="Prix par jour" step="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="modal_amount" class="form-label" required>Prix total du séjour</label>
-                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_amount" name="amount" placeholder="Prix total du séjour" step="1" readonly required>
+                                    <input type="number" class="form-control" min="0"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_amount" name="amount"
+                                        placeholder="Prix total du séjour" step="1" readonly required>
                                 </div>
 
 
                                 <div class="mb-3">
                                     <label for="modal_paid_amount" class="form-label" required>Montant payé</label>
-                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)"id="modal_paid_amount" value="0" name="paid_amount" placeholder="Montant payé" step="1" required>
+                                    <input type="number" class="form-control" min="0"
+                                        oninput="this.value = Math.abs(this.value)"id="modal_paid_amount" value="0"
+                                        name="paid_amount" placeholder="Montant payé" step="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="modal_rest" class="form-label" required>Montant restant</label>
-                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_rest" value="0" name="rest" placeholder="Reste du montant" step="1" readonly required>
+                                    <input type="number" class="form-control" min="0"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_rest" value="0"
+                                        name="rest" placeholder="Reste du montant" step="1" readonly required>
                                 </div>
 
 
                                 <div class="mb-3">
                                     <label for="modal_occupant" class="form-label">Nom du client</label>
-                                    <input type="text" class="form-control" id="modal_occupant" name="occupant" placeholder="Nom du client" aria-describedby="Nom du client" required>
+                                    <input type="text" class="form-control" id="modal_occupant" name="occupant"
+                                        placeholder="Nom du client" aria-describedby="Nom du client" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="modal_cni_number" class="form-label" required>Numéro CNI</label>
-                                    <input type="number" class="form-control" id="modal_cni_number" name="cni_number" placeholder="Numéro de la carte d'identité" step="1" required>
+                                    <input type="number" class="form-control" id="modal_cni_number" name="cni_number"
+                                        placeholder="Numéro de la carte d'identité" step="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <div id="modal_expire_screeresult" role="alert">
                                     </div>
                                     <div class="form-group">
-                                        <label for="modal_expire_date" class="form-label" required>Date d'expiration de la carte</label>
-                                        <input id="modal_expire_date" type="datetime-local" name="expire_date" class="form-control" required onchange="expireModalChange()">
+                                        <label for="modal_expire_date" class="form-label" required>Date d'expiration de la
+                                            carte</label>
+                                        <input id="modal_expire_date" type="datetime-local" name="expire_date"
+                                            class="form-control" required onchange="expireModalChange()">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -348,12 +383,17 @@
                                     </div>
 
                                     <label for="contrat_file" class="form-label">Fichier du contrat</label>
-                                    <button value="" type="button" class="m-2 btn btn-primary text-white" id="contratView"> Voir <i class="
+                                    <button value="" type="button" class="m-2 btn btn-primary text-white"
+                                        id="contratView"> Voir <i
+                                            class="
                                     fa fa-eye"></i></button>
-                                    <input class="form-control" name="contrat_file" type="file" id="modal_contrat_file" accept="image/*,.pdf" />
+                                    <input class="form-control" name="contrat_file" type="file"
+                                        id="modal_contrat_file" accept="image/*,.pdf" />
                                 </div>
-                                <button type="modal_submit" id="modal_submit" class="btn btn-primary">Enregistrer</button>
-                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
+                                <button type="modal_submit" id="modal_submit"
+                                    class="btn btn-primary">Enregistrer</button>
+                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger"
+                                    data-dismiss="modal">Fermer</a>
 
                             </form>
 
@@ -436,6 +476,7 @@
 
 
                 $("#contrat_file").val(null);
+                $('#submit').prop("disabled", false);
 
             });
 
@@ -472,7 +513,7 @@
             $('#day_amount').keyup(function() {
 
                 let day_amount = $('#day_amount').val();
-                $('#rest').val(day_amount);
+                // $('#rest').val(day_amount);
 
 
                 let start_time
@@ -492,7 +533,7 @@
 
 
                 $('#amount').val(day_amount * nbr_day)
-                $('#rest').val(day_amount)
+                $('#rest').val(day_amount * nbr_day)
                 $('#paid_amount').val(0)
 
             });
@@ -501,7 +542,7 @@
             $('#modal_day_amount').keyup(function() {
 
                 let day_amount = $('#modal_day_amount').val();
-                $('#modal_rest').val(day_amount);
+                // $('#modal_rest').val(day_amount);
 
 
                 let start_time
@@ -521,7 +562,7 @@
 
 
                 $('#modal_amount').val(day_amount * nbr_day)
-                $('#modal_rest').val(day_amount)
+                $('#modal_rest').val(day_amount * nbr_day)
                 $('#modal_paid_amount').val(0)
 
             });
@@ -546,7 +587,8 @@
                                 $("#start_time").prop('disabled', false)
                             } else {
                                 $("#start_time").prop('disabled', true)
-                                $("#screeresult").html("IL n'y a pas d'appartement disponible pour ce type");
+                                $("#screeresult").html(
+                                    "IL n'y a pas d'appartement disponible pour ce type");
                                 $("#screeresult").show();
 
                                 $("#screeresult").removeClass("alert alert-success");
@@ -559,7 +601,9 @@
 
                             }
 
-                            $('#code_select').empty().append('<option value="">Choisir le code de l\'appartement</option>')
+                            $('#code_select').empty().append(
+                                '<option value="">Choisir le code de l\'appartement</option>'
+                            )
                             $.each(data, function(i, item) {
                                 $('#code_select').append($('<option>', {
                                     value: item.id,
@@ -606,7 +650,8 @@
                                 $("#modal_start_time").prop('readonly', false)
                             } else {
                                 $("#modal_start_time").prop('readonly', true)
-                                $("#modal_screeresult").html("IL n'y a pas d'appartement disponible pour ce type");
+                                $("#modal_screeresult").html(
+                                    "IL n'y a pas d'appartement disponible pour ce type");
                                 $("#modal_screeresult").show();
 
                                 $("#modal_screeresult").removeClass("alert alert-success");
@@ -619,7 +664,9 @@
 
                             }
 
-                            $('#modal_code_select').empty().append('<option value="">Choisir le code de l\'appartement</option>')
+                            $('#modal_code_select').empty().append(
+                                '<option value="">Choisir le code de l\'appartement</option>'
+                            )
                             $.each(data, function(i, item) {
                                 $('#modal_code_select').append($('<option>', {
                                     value: item.id,
@@ -687,21 +734,24 @@
             $('#contrat_file').change(function(e) {
                 let file = e.target.files[0];
 
-                if (file.size > 5000000) {
-                    $("#file_screeresult").html("Votre fichier ne doit pas dépasser 5Mb");
+                if (file.size > 2000000) {
+                    $("#file_screeresult").html("Votre fichier ne doit pas dépasser 2Mb");
                     $("#file_screeresult").show();
 
                     $("#file_screeresult").removeClass("alert alert-success");
                     $("#file_screeresult").removeClass("alert alert-danger");
                     $("#file_screeresult").addClass("alert alert-danger");
+                    $('#submit').prop("disabled", true);
 
                     setTimeout(function() {
                         $("#file_screeresult").hide();
 
                     }, 2000); //wait 2 seconds
-                    $('#submit').prop("disabled", true);
-                } else {
 
+
+                    console.log(file.size, "bon");
+                } else {
+                    console.log(file.size, "non");
                     $('#submit').prop("disabled", false);
 
                 }
@@ -711,7 +761,7 @@
             $('#modal_contrat_file').change(function(e) {
                 let file = e.target.files[0];
 
-                if (file.size > 5000000) {
+                if (file.size > 2000000) {
                     $("#modal_file_screeresult").html("Votre fichier ne doit pas dépasser 5Mb");
                     $("#modal_file_screeresult").show();
 
@@ -783,7 +833,8 @@
 
                 } else {
                     $('#rest').val(0);
-                    $("#screeresult").html("Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
+                    $("#screeresult").html(
+                        "Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
                     $("#screeresult").show();
 
                     $("#screeresult").removeClass("alert alert-success");
@@ -812,7 +863,8 @@
 
                 } else {
                     $('#modal_rest').val(0);
-                    $("#modal_screeresult").html("Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
+                    $("#modal_screeresult").html(
+                        "Veuillez entrez une somme qui n'est pas supérieure au montannt de la chambre ");
                     $("#modal_screeresult").show();
 
                     $("#modal_screeresult").removeClass("alert alert-success");
@@ -858,25 +910,28 @@
 
         function search() {
 
+            var data = new FormData();
 
-            var frm = $('#search-form');
+            //Form data
+            var form_data = $('#search-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
 
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+
                 url: '{{ route('getAppartHistoric') }}',
                 method: 'POST',
-
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    data: frm.serialize(),
-                },
+                data: data,
+                processData: false,
+                contentType: false,
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#search_submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>')
+                        .prop(
+                            "disabled", true);
                 },
                 success: function(data) {
-                    $('#submit').html('connexion').prop("disabled", false);
+                    $('#search_submit').html('connexion').prop("disabled", false);
 
                     let result = JSON.parse(data).data
 
@@ -884,39 +939,40 @@
 
                         if (result.length != 0) {
                             $('#search-form')[0].reset();
-                            $("#screeresult").html("Recherche bien effecttuée");
-                            $("#screeresult").show();
+                            $("#search_screeresult").show();
 
                             $('#title_datatable').html("Résultats de la recherche")
+                            $("#search_screeresult").removeClass("alert alert-success");
+                            $("#search_screeresult").removeClass("alert alert-danger");
+                            $("#search_screeresult").addClass("alert alert-success");
+                            $("#search_screeresult").html("Recherche bien effecttuée");
 
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-success");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#search_screeresult").hide();
                             }, 3000); //wait 2 seconds
 
-                            $('#submit').html('Enregistrer').prop("disabled", false);
+                            $('#search_submit').html('Enregistrer').prop("disabled", false);
                         } else {
                             $('#search-form')[0].reset();
-                            $("#screeresult").html("Aucune donné trouvée(s)");
-                            $("#screeresult").show();
+                            $("#search_screeresult").show();
 
                             $('#title_datatable').html("Résultats de la recherche")
 
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-warning");
+                            $("#search_screeresult").removeClass("alert alert-success");
+                            $("#search_screeresult").removeClass("alert alert-danger");
+                            $("#search_screeresult").addClass("alert alert-warning");
+                            $("#search_screeresult").html("Aucune donné trouvée(s)");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#search_screeresult").hide();
 
                             }, 2000); //wait 2 seconds
 
-                            $('#submit').html('Enregistrer').prop("disabled", false);
+                            $('#search_submit').html('Enregistrer').prop("disabled", false);
 
                         }
                         //datatable reload
 
+                    
                         $('#vehicle-table').DataTable({
                             destroy: true,
                             responsive: true,
@@ -977,45 +1033,36 @@
                                     "targets": -1,
                                     "data": "id",
                                     render: function(data, type, row, meta) {
-                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
-
-                                        return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
+                                        return '<button value="' + data +
+                                            '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-eye"></i></button> <button value="' +
+                                            data +
+                                            '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-pencil-alt"></i></button>';
                                     },
                                 },
                                 {
                                     "targets": -2,
                                     "data": "status",
                                     render: function(data, type, row, meta) {
-                                        // console.log(data)
-                                        if (data == "EN COURS") {
-                                            return "<div class='badge badge-info'><h8>En cours</h8> </div>";
+                                        if (data == "TERMINE") {
+                                            return "<div class='badge badge-success'><h8>Terminé</h8></div>";
 
-                                        } else if (data == "RESERVE") {
-                                            return "<div class='badge badge-warning'> <h8>RESERVE</h8></div>  ";
+                                        } else if (data == "EN COURS") {
+                                            return "<div class='badge badge-info'> <h8>En cours</h8></div>  ";
 
-                                        } else if (data == "TERMINE") {
-                                            return "<div class='badge badge-success'> <h8>TERMINE</h8></div>  ";
-
+                                        } else if (data == "REVERVE") {
+                                            return "<div class='badge badge-warning'> <h8>Réservé</h8></div>  ";
+                                        } else {
+                                            console.log(data)
+                                            return ''
                                         }
                                     },
                                 },
                                 {
-
-                                    "targets": -10,
-                                    "data": "name",
+                                    "targets": -7,
+                                    "data": "end_time",
                                     render: function(data, type, row, meta) {
-                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
-                                        return row.name + " " + row.color + "";
-                                    },
-                                },
-                                {
-
-                                    "targets": -8,
-                                    "data": "arrival_time",
-                                    render: function(data, type, row, meta) {
-                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
-                                        if (row.travel_time) {
-                                            return this.formatDate(row.arrival_time);
+                                        if (row.end_time) {
+                                            return this.formatDate(row.end_time);
                                         } else {
                                             return ''
                                         }
@@ -1024,10 +1071,9 @@
                                 },
                                 {
 
-                                    "targets": -9,
+                                    "targets": -8,
                                     "data": "start_time",
                                     render: function(data, type, row, meta) {
-                                        // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
                                         if (row.start_time) {
                                             return this.formatDate(row.start_time);
                                         } else {
@@ -1038,8 +1084,8 @@
                                 },
 
 
-
                             ]
+
                         });
 
                     } catch (error) {
@@ -1163,7 +1209,8 @@
                 contentType: false,
                 data: data,
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop(
+                        "disabled", true);
                 },
                 success: function(data) {
                     $('#submit').html('connexion').prop("disabled", false);
@@ -1234,18 +1281,22 @@
         }
 
         function loadHistoric() {
-            var frm = $('#search-form');
+
+            var data = new FormData();
+
+            //Form data
+            var form_data = $('#search-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
 
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+
                 url: '{{ route('getAppartHistoric') }}',
                 method: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    data: frm.serialize(),
-                },
+                data: data,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     $('#vehicle-table').DataTable({
                         destroy: true,
@@ -1307,7 +1358,10 @@
                                 "targets": -1,
                                 "data": "id",
                                 render: function(data, type, row, meta) {
-                                    return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-pencil-alt"></i></button>';
+                                    return '<button value="' + data +
+                                        '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-eye"></i></button> <button value="' +
+                                        data +
+                                        '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#appartModal"><i class="fa fa-pencil-alt"></i></button>';
                                 },
                             },
                             {
@@ -1408,7 +1462,8 @@
                 data: data,
                 beforeSend: function(data) {
                     console.log(data)
-                    $('#modal_submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#modal_submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>')
+                        .prop("disabled", true);
                 },
                 success: function(data) {
                     $('#modal_submit').html('connexion').prop("disabled", false);
@@ -1758,6 +1813,8 @@
 
                 let type = $('#type_select').val()
 
+
+
                 getAmoutPerDay(nbr_day, type)
 
                 $('#submit').prop("disabled", false);
@@ -1857,7 +1914,7 @@
 
                     $('#day_amount').val(data.amount)
                     $('#amount').val(data.amount * nbr_day)
-                    $('#rest').val(data.amount)
+                    $('#rest').val(data.amount * nbr_day)
 
 
                 }
@@ -1885,7 +1942,7 @@
 
                     $('#modal_day_amount').val(data.amount)
                     $('#modal_amount').val(data.amount * nbr_day)
-                    $('#modal_rest').val(data.amount)
+                    $('#modal_rest').val(data.amount * nbr_day)
 
 
                 }

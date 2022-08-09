@@ -46,12 +46,13 @@
 
         <h2 class="text-center m-4">Formulaire de Recherche</h2>
 
-        <div id="screeresult" role="alert">
+        <div id="search_screeresult" role="alert">
         </div>
 
 
         <form id="search-form" action="javascript:search()">
-            @csrf <div class="row">
+            @csrf
+            <div class="row">
                 <div class="col-sm">
                     <div class="">
                         <label for="date_debut" class="form-label">Date de début</label>
@@ -77,7 +78,8 @@
 
 
     <div class="row">
-        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle activité <i class="ml-3 fa fa-plus" aria-hidden="true"></i></button>
+        <button id="new_vehicle_btn" class="m-5 btn btn-primary">Créer une nouvelle activité <i class="ml-3 fa fa-plus"
+                aria-hidden="true"></i></button>
 
         <div id="new_vehicle_div" class="mx-auto col-10 offset-1" style="max-width: 70%;display:none;margin-top:100px;">
 
@@ -95,7 +97,8 @@
 
                     <div class="form-group">
                         <label for="vehicle_id" class="form-label">Matricule de la voiture</label>
-                        <select id="matricul_select" class="form-control select2" name="vehicle_id" style="width: 100%!important" required>
+                        <select id="matricul_select" class="form-control select2" name="vehicle_id"
+                            style="width: 100%!important" required>
                             <option value="">Choisir le matricule de la voiture</option>
                         </select>
                     </div>
@@ -104,13 +107,16 @@
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="start_time" class="form-label" required>Heure de départ de la voiture</label>
-                        <input id="start_time" type="datetime-local" name="start_time" class="form-control" format="DD-MM-YY hh:mm:ss">
+                        <input id="start_time" type="datetime-local" name="start_time" class="form-control"
+                            format="DD-MM-YY hh:mm:ss">
                     </div>
 
                 </div>
                 <div class="mb-3">
                     <label for="start_km" class="form-label" required>Km départ de la voiture</label>
-                    <input type="number" class="form-control" id="start_km" min="0" oninput="this.value = Math.abs(this.value)" name="start_km"placeholder="Km départ de la voiture" step="0.01" required>
+                    <input type="number" class="form-control" id="start_km" min="0"
+                        oninput="this.value = Math.abs(this.value)" name="start_km"placeholder="Km départ de la voiture"
+                        step="0.01" required>
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Enregistrer</button>
                 <a id="close_btn" class="m-2 text-white btn btn-danger">Fermer</a>
@@ -159,7 +165,8 @@
 
             {{-- /modal --}}
 
-            <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -174,49 +181,66 @@
                             <form id="modal-historic-form" action="javascript:update_historic()">
 
                                 @csrf
-                                <input type="hidden" id="modal_historic_id" class="form-control" name="historic_id" required>
-                                <input type="hidden" id="modal_travel_time" class="form-control" name="travel_time" required>
-                                <input type="hidden" id="modal_vehicle_id" class="form-control" name="vehicle_id" required>
+                                <input type="hidden" id="modal_historic_id" class="form-control" name="historic_id"
+                                    required>
+                                <input type="hidden" id="modal_travel_time" class="form-control" name="travel_time"
+                                    required>
+                                <input type="hidden" id="modal_vehicle_id" class="form-control" name="vehicle_id"
+                                    required>
 
 
                                 <div class="mb-3">
 
                                     <div class="form-group">
                                         <label for="vehicle_id" class="form-label">Matricule de la voiture</label>
-                                        <input id="modal_matricul_select" class="form-control" name="vehicle_id" style="width: 100%!important" required>
+                                        <input id="modal_matricul_select" class="form-control" name="vehicle_id"
+                                            style="width: 100%!important" required>
                                     </div>
 
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-group">
-                                        <label for="start_time" class="form-label" required>Heure de départ de la voiture</label>
-                                        <input id="modal_start_time" type="text" name="start_time" class="form-control">
+                                        <label for="start_time" class="form-label" required>Heure de départ de la
+                                            voiture</label>
+                                        <input id="modal_start_time" type="text" name="start_time"
+                                            class="form-control">
                                     </div>
 
                                 </div>
                                 <div class="mb-3">
                                     <label for="start_km" class="form-label" required>Km départ de la voiture</label>
-                                    <input type="number" class="form-control" oninput="this.value = Math.abs(this.value)" id="modal_start_km" min="0" name="start_km" placeholder="Km départ de la voiture" step="0.01" required>
+                                    <input type="number" class="form-control"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_start_km" min="0"
+                                        name="start_km" placeholder="Km départ de la voiture" step="0.01" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="arrival_time" class="form-label" required> Heure d'arrivée de la voiture</label>
-                                    <input id="modal_arrival_time" type="datetime-local" name="arrival_time" class="form-control datetimepicker" onchange="endChange()">
+                                    <label for="arrival_time" class="form-label" required> Heure d'arrivée de la
+                                        voiture</label>
+                                    <input id="modal_arrival_time" type="datetime-local" name="arrival_time"
+                                        class="form-control datetimepicker" onchange="endChange()">
 
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="arrival_km" class="form-label" required>Km d'arrivée de la voiture</label>
-                                    <input type="number" class="form-control" oninput="this.value = Math.abs(this.value)" id="modal_arrival_km" name="arrival_km" min="0" placeholder="Km d'arrivée de la voiture" step="0.01" required>
+                                    <input type="number" class="form-control"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_arrival_km"
+                                        name="arrival_km" min="0" placeholder="Km d'arrivée de la voiture"
+                                        step="0.01" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="amount_repaid" class="form-label" required>Montant reversé</label>
-                                    <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" id="modal_amount_repaid" name="amount_repaid"placeholder="Montant reversé" required>
+                                    <input type="number" class="form-control" min="0"
+                                        oninput="this.value = Math.abs(this.value)" id="modal_amount_repaid"
+                                        name="amount_repaid"placeholder="Montant reversé" required>
                                 </div>
 
-                                <button type="modal-submit" id="modal-submit" class="btn btn-primary">Enregistrer</button>
-                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger" data-dismiss="modal">Fermer</a>
+                                <button type="modal-submit" id="modal-submit"
+                                    class="btn btn-primary">Enregistrer</button>
+                                <a id="modal_close_btn" class="m-2 text-white btn btn-danger"
+                                    data-dismiss="modal">Fermer</a>
 
                             </form>
 
@@ -316,19 +340,22 @@
         });
 
         function search() {
-
-
-            var frm = $('#search-form');
+            var data = new FormData();
+            //Form data
+            var form_data = $('#search-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
 
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 url: '{{ route('getHistoric') }}',
                 method: 'POST',
-                data: frm.serialize(),
+                data: data,
+                processData: false,
+                contentType: false,
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop(
+                        "disabled", true);
                 },
                 success: function(data) {
                     $('#submit').html('connexion').prop("disabled", false);
@@ -340,31 +367,29 @@
 
                         if (result.length != 0) {
                             $('#search-form')[0].reset();
-                            $("#screeresult").html("Recherche bien effecttuée");
-                            $("#screeresult").show();
+                            $("#search_screeresult").show();
+                            $("#search_screeresult").html("Recherche bien effectuée");
 
+                            $("#search_screeresult").removeClass("alert alert-success");
+                            $("#search_screeresult").removeClass("alert alert-danger");
+                            $("#search_screeresult").addClass("alert alert-success");
                             $('#title_datatable').html("Résultats de la recherche")
-
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-success");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#search_screeresult").hide();
                             }, 3000); //wait 2 seconds
 
                             $('#submit').html('Enregistrer').prop("disabled", false);
                         } else {
                             $('#search-form')[0].reset();
-                            $("#screeresult").html("Aucune donné trouvée(s)");
-                            $("#screeresult").show();
+                            $("#search_screeresult").show();
+                            $("#search_screeresult").html("Aucune donné trouvée(s)");
 
+                            $("#search_screeresult").removeClass("alert alert-success");
+                            $("#search_screeresult").removeClass("alert alert-danger");
+                            $("#search_screeresult").addClass("alert alert-warning");
                             $('#title_datatable').html("Résultats de la recherche")
-
-                            $("#screeresult").removeClass("alert alert-success");
-                            $("#screeresult").removeClass("alert alert-danger");
-                            $("#screeresult").addClass("alert alert-warning");
                             setTimeout(function() {
-                                $("#screeresult").hide();
+                                $("#search_screeresult").hide();
 
                             }, 2000); //wait 2 seconds
 
@@ -434,7 +459,10 @@
                                     render: function(data, type, row, meta) {
                                         // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
 
-                                        return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
+                                        return '<button value="' + data +
+                                            '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' +
+                                            data +
+                                            '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
                                     },
                                 },
                                 {
@@ -498,15 +526,15 @@
                         });
 
                     } catch (error) {
-                        $("#screeresult").show();
+                        $("#search_screeresult").show();
 
-                        $("#screeresult").removeClass("alert alert-success");
-                        $("#screeresult").removeClass("alert alert-danger");
-                        $("#screeresult").addClass("alert alert-danger");
-                        $("#screeresult").html('Une erreur s\'est produite veuillez ressayer').show();
+                        $("#search_screeresult").removeClass("alert alert-success");
+                        $("#search_screeresult").removeClass("alert alert-danger");
+                        $("#search_screeresult").addClass("alert alert-danger");
+                        $("#search_screeresult").html('Une erreur s\'est produite veuillez ressayer').show();
 
                         setTimeout(function() {
-                            $("#screeresult").hide();
+                            $("#search_screeresult").hide();
 
                         }, 2000); //wait 2 seconds
 
@@ -656,7 +684,8 @@
                 method: 'POST',
                 data: frm.serialize(),
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop(
+                        "disabled", true);
                 },
                 success: function(data) {
                     $('#submit').html('connexion').prop("disabled", false);
@@ -733,17 +762,20 @@
         }
 
         function loadHistoric() {
-            var frm = $('#search-form');
+
+            var data = new FormData();
+            //Form data
+            var form_data = $('#search-form').serializeArray();
+            $.each(form_data, function(key, input) {
+                data.append(input.name, input.value);
+            });
+
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 url: '{{ route('getHistoric') }}',
                 method: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    data: frm.serialize(),
-                },
+                data: data,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     $('#vehicle-table').DataTable({
                         destroy: true,
@@ -807,7 +839,10 @@
                                 render: function(data, type, row, meta) {
                                     // return "<div class='btn btn-primary '><i class='fa fa-eye'></i></div>";
 
-                                    return '<button value="' + data + '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' + data + '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
+                                    return '<button value="' + data +
+                                        '" class="btn btn-primary text-white" id="actionView" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-eye"></i></button> <button value="' +
+                                        data +
+                                        '" class="btn btn-success text-white" id="actionEdit" data-bs-toggle="modal" data-bs-target="#vehicleModal"><i class="fa fa-pencil-alt"></i></button>';
                                 },
                             },
                             {
@@ -940,7 +975,8 @@
                 data: frm.serialize(),
                 beforeSend: function(data) {
                     console.log(data)
-                    $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#modal-submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>')
+                        .prop("disabled", true);
                 },
                 success: function(data) {
                     $('#modal-submit').html('connexion').prop("disabled", false);

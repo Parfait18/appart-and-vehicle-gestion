@@ -18,11 +18,8 @@ class VehiclesRecapController extends BaseController
         return view('vehicle.vehicle_recap');
     }
 
-
-
     public function recapVehicles(Request $request)
     {
-
         $last_two_month = Carbon::now()->startOfMonth();
         $this_month = Carbon::now()->endOfMonth();
 
@@ -31,40 +28,40 @@ class VehiclesRecapController extends BaseController
             $this_month = $request->date_fin;
         }
 
-        $vehicle = VehicleHistoric::join('vehicles', 'vehicle_historics.vehicle_id', '=', 'vehicles.id')
-            ->whereBetween('vehicle_historics.created_at', [$last_two_month . ' 00:00:00', $this_month . ' 23:59:59'])
+        $vehicle = VehicleHistoric::join(
+            'vehicles',
+            'vehicle_historics.vehicle_id',
+            '=',
+            'vehicles.id'
+        )
+            ->whereBetween('vehicle_historics.start_time', [
+                $last_two_month . ' 00:00:00',
+                $this_month . ' 23:59:59',
+            ])
             ->select(
                 DB::raw('SUM(vehicle_historics.ca_daily) as ca_total'),
                 DB::raw('SUM(vehicle_historics.travel_km) as km_total'),
                 'vehicles.current_state',
                 'vehicles.matricule'
             )
-            ->groupBy(
-                'vehicles.current_state',
-                'vehicles.matricule'
-            )
+            ->groupBy('vehicles.current_state', 'vehicles.matricule')
             ->get();
-
 
         //list to get vehicle who don't have hsitorique
-        $not_hist =  Vehicle::select('current_state', 'matricule')->whereNotIn(
-            'id',
-            VehicleHistoric::whereBetween(
-                'vehicle_historics.created_at',
-                [
+        $not_hist = Vehicle::select('current_state', 'matricule')
+            ->whereNotIn(
+                'id',
+                VehicleHistoric::whereBetween('vehicle_historics.start_time', [
                     $last_two_month . ' 00:00:00',
-                    $this_month . ' 23:59:59'
-                ]
+                    $this_month . ' 23:59:59',
+                ])
+                    ->groupBy('vehicle_id')
+                    ->pluck('vehicle_id')
             )
-                ->groupBy('vehicle_id')
-                ->pluck('vehicle_id')
-        )
             ->get();
-
 
         $length = count($vehicle);
         foreach ($not_hist as $key => $value) {
-
             $vehicle[$length] = $value;
             $vehicle[$length]['ca_total'] = 0;
             $vehicle[$length]['km_total'] = 0;
@@ -72,8 +69,7 @@ class VehiclesRecapController extends BaseController
             $length += 1;
         }
 
-
-        $reponse = json_encode(array('data' => $vehicle), TRUE);
+        $reponse = json_encode(['data' => $vehicle], true);
 
         return $reponse;
     }

@@ -80,7 +80,8 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="section-header">
-                    <h2 id="title_datatable" class="text-center">Listes des recapitulatifs pour chaque vehicules de ce mois</h2>
+                    <h2 id="title_datatable" class="text-center">Listes des recapitulatifs pour chaque vehicules de ce mois
+                    </h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -190,7 +191,8 @@
                 method: 'POST',
                 data: frm.serialize(),
                 beforeSend: function(data) {
-                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop("disabled", true);
+                    $('#submit').html('Patientez... <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>').prop(
+                        "disabled", true);
                 },
                 success: function(data) {
                     $('#submit').html('connexion').prop("disabled", false);
